@@ -4,9 +4,9 @@ import { axiosPrivate } from "../api";
 import CharacterCard from "../components/CharacterCard";
 import Spinner from "../components/Spinner/Spinner";
 import { DefaultResponse } from "../containers/RefreshTokenOnLoad";
-import useAuth from "../hooks/useAuth";
 import { Summary } from "../interfaces/Summary";
 import { SERVER_BASE_URL } from "../utils/server_base_url";
+import { useAuth } from "../context/AuthContext";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -39,7 +39,7 @@ const Home = () => {
   );
 
   return (
-    <main className="mt-[200px] p-4">
+    <main className="p-4">
       {isLoading && <Spinner />}
       <section>
         <h2 className="text-4xl mb-4">
@@ -61,7 +61,7 @@ const Home = () => {
         <div className="grid">
           {filteredCharacters &&
             filteredCharacters.map((character) => {
-              return <CharacterCard character={character} />;
+              return <CharacterCard key={character.id} character={character} />;
             })}
         </div>
       </section>

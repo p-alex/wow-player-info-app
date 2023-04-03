@@ -2,13 +2,22 @@ import { Routes, Route } from "react-router-dom";
 import RedirectIfAuth from "./containers/RedirectIfAuth";
 import RefreshTokenOnLoad from "./containers/RefreshTokenOnLoad";
 import RequireAuth from "./containers/RequireAuth";
-import Layout from "./layout/layout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Character from "./pages/Character";
+import Layout from "./layout/Layout";
 function App() {
   return (
     <RefreshTokenOnLoad>
       <Routes>
+        <Route
+          path="login"
+          element={
+            <RedirectIfAuth>
+              <Login />
+            </RedirectIfAuth>
+          }
+        />
         <Route element={<Layout />}>
           <Route
             path="/"
@@ -18,15 +27,15 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route
+            path="characters/:realm_slug/:char_name"
+            element={
+              <RequireAuth>
+                <Character />
+              </RequireAuth>
+            }
+          />
         </Route>
-        <Route
-          path="login"
-          element={
-            <RedirectIfAuth>
-              <Login />
-            </RedirectIfAuth>
-          }
-        />
         <Route path="*" element={<p>Page does not exist</p>}></Route>
       </Routes>
     </RefreshTokenOnLoad>

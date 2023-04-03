@@ -1,10 +1,9 @@
 import { ReactElement } from "react";
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { RootState } from "../app/store";
+import { useAuth } from "../context/AuthContext";
 
 const RedirectIfAuth = ({ children }: { children: ReactElement<any, any> }) => {
-  const auth = useSelector((state: RootState) => state.auth);
+  const { auth } = useAuth();
 
   return auth.id ? <Navigate to="/" replace={true} /> : children;
 };

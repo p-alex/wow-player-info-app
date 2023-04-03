@@ -21,6 +21,7 @@ class WowController {
       getCharacterEquipmentController: this.getCharacterEquipmentController,
       getCharacterDungeonsController: this.getCharacterDungeonsController,
       getCharacterQuestsController: this.getCharacterQuestsController,
+      getCharacterSummaryController: this.getCharacterSummaryController,
     });
   }
 
@@ -39,7 +40,7 @@ class WowController {
 
       const data = await this.wowServiceList.getSummaryService({ user_id });
 
-      await redis.set("summary-" + user_id, JSON.stringify(data), "EX", 1200);
+      await redis.set("summary-" + user_id, JSON.stringify(data), "EX", 3600);
 
       return res.status(200).json({ success: true, errors: [], data });
     } catch (error: any) {
@@ -82,9 +83,34 @@ class WowController {
         "character-media-" + user_id + "-" + char_name + "-" + realm_slug,
         JSON.stringify(data),
         "EX",
-        1200
+        3600
       );
 
+      return res.status(200).json({ success: true, errors: [], data });
+    } catch (error: any) {
+      console.log(error.message);
+      return res.status(500).json({
+        success: false,
+        errors: [{ message: error.message }],
+        data: null,
+      });
+    }
+  };
+
+  private getCharacterSummaryController = async (
+    req: Request<{}, {}, {}, GetCharacterInfoInput>,
+    res: Response
+  ) => {
+    try {
+      //@ts-ignore
+      const user_id = req.user_id;
+      const { region, realm_slug, char_name } = req.query;
+      const data = await this.wowServiceList.getCharacterSummaryService({
+        user_id,
+        region,
+        realm_slug,
+        char_name,
+      });
       return res.status(200).json({ success: true, errors: [], data });
     } catch (error: any) {
       console.log(error.message);
@@ -129,12 +155,31 @@ class WowController {
       //@ts-ignore
       const user_id = req.user_id;
       const { region, char_name, realm_slug } = req.query;
+
+      const cached = await redis.get(
+        "character-equipment-" + user_id + "-" + char_name + "-" + realm_slug
+      );
+
+      if (cached) {
+        return res
+          .status(200)
+          .json({ success: true, errors: [], data: JSON.parse(cached) });
+      }
+
       const data = await this.wowServiceList.getCharacterEquipmentService({
         user_id,
         region,
         char_name,
         realm_slug,
       });
+
+      await redis.set(
+        "character-equipment-" + user_id + "-" + char_name + "-" + realm_slug,
+        JSON.stringify(data),
+        "EX",
+        3600
+      );
+
       return res.status(200).json({ success: true, errors: [], data });
     } catch (error: any) {
       console.log(error.message);

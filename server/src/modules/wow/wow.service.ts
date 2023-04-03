@@ -38,6 +38,7 @@ class WowService {
       getCharacterEquipmentService: this.getCharacterEquipmentService,
       getCharacterDungeonsService: this.getCharacterDungeonsService,
       getCharacterQuestsService: this.getCharacterQuestsService,
+      getCharacterSummaryService: this.getCharacterSummaryService,
     });
   }
 
@@ -72,6 +73,27 @@ class WowService {
       realm_slug,
       access_token: bn_access_token,
     });
+    return result;
+  };
+
+  private getCharacterSummaryService = async ({
+    user_id,
+    region,
+    realm_slug,
+    char_name,
+  }: ICharacterInfo) => {
+    const bn_access_token = await this.oauthDbList.findBattleNetAccessToken({
+      user_id,
+    });
+    if (!bn_access_token) throw new Error("No battle net access token");
+
+    const result = await this.wowDbList.getCharacterSummary({
+      region,
+      realm_slug,
+      char_name,
+      access_token: bn_access_token,
+    });
+
     return result;
   };
 

@@ -1,9 +1,8 @@
-import { useDispatch } from "react-redux";
 import { axiosPublic } from "../api";
-import { setUser } from "../app/features/auth";
+import { useAuth } from "../context/AuthContext";
 
 const useRefreshToken = () => {
-  const dispatch = useDispatch();
+  const { handleSetAuth } = useAuth();
 
   const handleRefreshToken = async () => {
     const { data } = await axiosPublic.get("/oauth/refresh-token", {
@@ -12,13 +11,11 @@ const useRefreshToken = () => {
 
     if (!data.success || !data.data) return;
 
-    dispatch(
-      setUser({
-        id: data.data.user.id,
-        battleTag: data.data.user.battleTag,
-        accessToken: data.data.newAccessToken,
-      })
-    );
+    handleSetAuth({
+      id: data.data.user.id,
+      battleTag: data.data.user.battleTag,
+      accessToken: data.data.newAccessToken,
+    });
 
     return data.data.newAccessToken;
   };

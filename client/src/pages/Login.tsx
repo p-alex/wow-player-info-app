@@ -6,7 +6,7 @@ const Login = () => {
   return (
     <main className="">
       <section className="relative mx-auto w-[350px] mt-8 bg-gray-800 rounded border-gray-700 border shadow text-center overflow-hidden">
-        <header className="grayscale bg-[url('/images/wow-header.jpg')] h-[150px] bg-cover bg-[center_top_-1rem]"></header>
+        <header className="grayscale bg-[url('/images/wow-header.webp')] h-[150px] bg-cover bg-[center_top_-1rem]"></header>
         <div className="p-8">
           <h1 className="text-4xl mb-4 text-white">WoW Inspect</h1>
           <p className="mb-4 text-slate-300">

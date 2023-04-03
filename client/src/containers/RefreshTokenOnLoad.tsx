@@ -1,9 +1,7 @@
 import { useEffect, useState, ReactElement } from "react";
-import { useDispatch } from "react-redux";
 import { axiosPublic } from "../api";
-
-import { setUser } from "../app/features/auth";
 import Spinner from "../components/Spinner/Spinner";
+import { useAuth } from "../context/AuthContext";
 
 export interface DefaultResponse<Data> {
   success: boolean;
@@ -16,8 +14,8 @@ const RefreshTokenOnLoad = ({
 }: {
   children: ReactElement<any, any>;
 }) => {
+  const { handleSetAuth } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
 
   const handleRefreshToken = async () => {
     try {
@@ -28,13 +26,11 @@ const RefreshTokenOnLoad = ({
 
       if (!data.success || !data.data) return;
 
-      dispatch(
-        setUser({
-          id: data.data.user.id,
-          battleTag: data.data.user.battleTag,
-          accessToken: data.data.newAccessToken,
-        })
-      );
+      handleSetAuth({
+        id: data.data.user.id,
+        battleTag: data.data.user.battleTag,
+        accessToken: data.data.newAccessToken,
+      });
     } catch (error) {
       console.error(error);
     } finally {

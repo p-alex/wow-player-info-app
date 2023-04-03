@@ -1,20 +1,17 @@
 import { Link } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import LogoutBtn from "./LogoutBtn";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const { auth } = useAuth();
   return (
-    <div className="fixed top-0 left-0 w-full max-w-[2400px] right-0 mx-auto h-[80px] flex justify-between items-center bg-black overflow-hidden z-2">
-      <Link
-        to={"/"}
-        className="h-[80px] bg-slate-800 p-4 flex items-center justify-center text-2xl"
-      >
-        WoW Inspect
-      </Link>
-      <div className="flex gap-4 items-center px-4">
-        <p>{auth.battleTag}</p> <LogoutBtn />
+    <div className="w-full flex flex-col items-center p-4">
+      <div className="flex flex-col gap-4 items-center px-4 mb-8">
+        <p className="text-2xl">{auth.battleTag}</p> <LogoutBtn />
       </div>
+      <Link to={"/"} className="text-blue-500">
+        Character list
+      </Link>
     </div>
   );
 };

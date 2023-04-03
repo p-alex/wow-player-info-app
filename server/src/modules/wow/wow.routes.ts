@@ -16,6 +16,7 @@ const {
   getCharacterEquipmentController,
   getCharacterDungeonsController,
   getCharacterQuestsController,
+  getCharacterSummaryController,
 } = wowControllerList;
 
 wowRouter.get("/summary", requireAuth, getSummaryController);
@@ -25,6 +26,13 @@ wowRouter.get(
   requireAuth,
   validateResource(getCharacterInfoSchema),
   getCharacterMediaController
+);
+
+wowRouter.get(
+  "/character-summary",
+  requireAuth,
+  validateResource(getCharacterInfoSchema),
+  getCharacterSummaryController
 );
 
 wowRouter.get(

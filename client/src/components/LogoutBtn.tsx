@@ -1,16 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { resetUser } from "../app/features/auth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { useAuth } from "../context/AuthContext";
 
 const LogoutBtn = () => {
-  const dispatch = useDispatch();
+  const { handleResetAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
 
   const { mutate, data, isLoading } = useMutation({
     mutationFn: () => axiosPrivate.post("/oauth/logout"),
     onSuccess: () => {
-      dispatch(resetUser());
+      handleResetAuth();
     },
   });
 

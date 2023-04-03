@@ -11,12 +11,12 @@ const CharacterCard = ({ character }: { character: CharactersEntity }) => {
         character.name.toLowerCase()
       }
     >
-      <div className="flex items-center gap-4 p-6 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg">
+      <div className="flex items-center gap-4 p-6 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg transition-colors">
         <img
           src={
             character.faction.name === "Horde"
-              ? "/images/horde.png"
-              : "/images/alliance.png"
+              ? "/images/horde.webp"
+              : "/images/alliance.webp"
           }
           width="60"
           height="60"
