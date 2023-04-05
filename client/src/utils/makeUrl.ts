@@ -7,7 +7,7 @@ const makeUrl = ({
   region: string;
   realm_slug: string;
   char_name: string;
-  toFetch: "media" | "equipment" | "summary";
+  toFetch: "media" | "equipment" | "summary" | "statistics";
 }) => {
   return (
     `/profile/character-${toFetch}?region=` +

@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import CharacterDisplay from "../components/CharacterDisplay";
 import { getCharacterSummary } from "../api/requests";
 import { useAuth } from "../context/AuthContext";
+import CharacterContextProvider from "../context/CharacterContext";
+import CharacterStatistics from "../components/CharacterStatistics";
 
 const Character = () => {
   const { auth } = useAuth();
@@ -23,13 +25,16 @@ const Character = () => {
       }),
     retry: false,
     refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 60 * 20,
+    staleTime: 1000 * 60 * 60,
   });
 
   return (
-    <main className="p-4">
+    <main className="max-w-[1100px] mx-auto p-4 animate-fadeIn">
       {characterSummary?.data && (
-        <CharacterDisplay character={characterSummary.data} />
+        <CharacterContextProvider>
+          <CharacterDisplay character={characterSummary.data} />
+          <CharacterStatistics character={characterSummary.data} />
+        </CharacterContextProvider>
       )}
     </main>
   );

@@ -19,7 +19,7 @@ const Home = () => {
           headers: { Authorization: `Bearer ${auth.accessToken}` },
         })
         .then((res) => res.data),
-    staleTime: 1000 * 60 * 60 * 10,
+    staleTime: 1000 * 60 * 60,
     retry: false,
   });
 

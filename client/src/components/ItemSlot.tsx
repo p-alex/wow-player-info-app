@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { EquippedItemsEntity } from "../interfaces/CharacterEquipment";
+import ItemStatsBubble from "./ItemStatsBubble";
+import ItemStatsModal from "./ItemStatsModal";
+import { useCharacter } from "../context/CharacterContext";
 
-const QUALITY_COLORS = {
+export const QUALITY_COLORS = {
   Epic: { border: "border-purple-500", text: "text-purple-500" },
   Rare: { border: "border-blue-500", text: "text-blue-500" },
   Heirloom: { border: "border-blue-300", text: "text-blue-300" },
@@ -18,10 +21,13 @@ const ItemSlot = ({
   isWeapon?: boolean;
   image?: string;
 }) => {
-  const [isStatsActive, setIsStatsActive] = useState(false);
+  const { selectedItemStats, handleSelectItemStats } = useCharacter();
+  const [isStatsBubbleActive, setIsStatsBubbleActive] = useState(false);
   const [statsPos, setStatsPos] = useState<"right" | "left">("right");
 
-  const handleStatsPos = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleStatsPos = (
+    e: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>
+  ) => {
     const windowWidth = window.innerWidth;
     const mouseX = e.clientX;
     if (mouseX < windowWidth / 2) {
@@ -31,65 +37,33 @@ const ItemSlot = ({
     }
   };
 
-  const showStatsToTop = "-top-2 translate-y-[-100%]";
-  const showStatsToLeft = "right-0 translate-x-[-55px]";
-  const showStatsToRight = "left-0 translate-x-[55px]";
-
   const itemQuality = stats?.quality.name as keyof typeof QUALITY_COLORS;
 
   return (
-    <div
-      className={`relative w-[50px] h-[50px] bg-slate-900 border ${
-        itemQuality ? QUALITY_COLORS[itemQuality]?.border : "border-slate-700"
-      } bg-contain bg-no-repeat bg-center`}
-      style={{ backgroundImage: "url(" + image + ")" }}
-      onMouseEnter={handleStatsPos}
-      onMouseOver={() => setIsStatsActive(true)}
-      onMouseLeave={() => setIsStatsActive(false)}
-    >
-      {isStatsActive && (
-        <div
-          className={`absolute w-max min-w-[220px] max-w-[300px] p-2 bg-gray-900 border ${
-            itemQuality
-              ? QUALITY_COLORS[itemQuality]?.border
-              : "border-slate-700"
-          } text-white z-10 text-sm animate-fadeIn ${
-            isWeapon
-              ? showStatsToTop
-              : statsPos === "left"
-              ? showStatsToLeft
-              : showStatsToRight
-          }`}
-        >
-          {!stats?.name && <p>No item.</p>}
-          <p className={QUALITY_COLORS[itemQuality]?.text}>{stats?.name}</p>
-          <p>{stats?.binding.name}</p>
-          <div className="flex justify-between">
-            <p>{stats?.slot.name}</p>
-            <p>{stats?.item_subclass.name}</p>
-          </div>
-          <p>{stats?.weapon?.damage?.display_string}</p>
-          <p>{stats?.armor?.display?.display_string}</p>
-          {stats?.stats?.map((stat) => {
-            return <p key={stat.type.name}>{stat.display?.display_string}</p>;
-          })}
-          <p className="text-green-500">{stats?.set?.display_string}</p>
-          {stats?.set?.items?.map((item) => {
-            return (
-              <p
-                className={`${
-                  item.is_equipped ? "text-white" : "text-gray-500"
-                } ml-2 text-xs`}
-              >
-                {item.item.name}
-              </p>
-            );
-          })}
-          <p>{stats?.durability?.display_string}</p>
-          <p>{stats?.requirements?.level?.display_string}</p>
-        </div>
+    <>
+      {selectedItemStats && selectedItemStats.item.id === stats?.item.id && (
+        <ItemStatsModal stats={stats} image={image} />
       )}
-    </div>
+      <button
+        className={`relative w-[50px] h-[50px] bg-slate-900 border ${
+          itemQuality ? QUALITY_COLORS[itemQuality]?.border : "border-slate-700"
+        } bg-contain bg-no-repeat bg-center`}
+        style={{ backgroundImage: "url(" + image + ")" }}
+        onMouseEnter={handleStatsPos}
+        onMouseOver={() => setIsStatsBubbleActive(true)}
+        onMouseLeave={() => setIsStatsBubbleActive(false)}
+        onClick={() => handleSelectItemStats(stats)}
+        id={stats?.item.id.toString()}
+      >
+        {isStatsBubbleActive && (
+          <ItemStatsBubble
+            stats={stats}
+            isWeapon={isWeapon}
+            statsPos={statsPos}
+          />
+        )}
+      </button>
+    </>
   );
 };
 

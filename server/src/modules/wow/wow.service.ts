@@ -34,8 +34,8 @@ class WowService {
       getSummaryService: this.getSummaryService,
       getCharacterMediaService: this.getCharacterMediaService,
       getProtectedCharacterService: this.getProtectedCharacterService,
-      getItemInfoService: this.getItemInfoService,
       getCharacterEquipmentService: this.getCharacterEquipmentService,
+      getCharacterStatisticsService: this.getCharacterStatisticsService,
       getCharacterDungeonsService: this.getCharacterDungeonsService,
       getCharacterQuestsService: this.getCharacterQuestsService,
       getCharacterSummaryService: this.getCharacterSummaryService,
@@ -118,20 +118,6 @@ class WowService {
     return result;
   };
 
-  private getItemInfoService = async ({
-    region,
-    item_id,
-  }: {
-    region: string;
-    item_id: string;
-  }) => {
-    const result = await this.wowDbList.getItemInfo({
-      region,
-      item_id,
-    });
-    return result;
-  };
-
   private getCharacterEquipmentService = async ({
     user_id,
     region,
@@ -143,6 +129,25 @@ class WowService {
     });
     if (!bn_access_token) throw new Error("No battle net access token");
     const result = await this.wowDbList.getCharacterEquipment({
+      region,
+      realm_slug,
+      char_name,
+      access_token: bn_access_token,
+    });
+    return result;
+  };
+
+  private getCharacterStatisticsService = async ({
+    user_id,
+    region,
+    realm_slug,
+    char_name,
+  }: ICharacterInfo) => {
+    const bn_access_token = await this.oauthDbList.findBattleNetAccessToken({
+      user_id,
+    });
+    if (!bn_access_token) throw new Error("No battle net access token");
+    const result = await this.wowDbList.getCharacterStatistics({
       region,
       realm_slug,
       char_name,

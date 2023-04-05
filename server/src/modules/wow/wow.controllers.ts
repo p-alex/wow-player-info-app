@@ -19,6 +19,7 @@ class WowController {
       getCharacterMediaController: this.getCharacterMediaController,
       getProtectedCharacterController: this.getProtectedCharacterController,
       getCharacterEquipmentController: this.getCharacterEquipmentController,
+      getCharacterStatisticsController: this.getCharacterStatisticsController,
       getCharacterDungeonsController: this.getCharacterDungeonsController,
       getCharacterQuestsController: this.getCharacterQuestsController,
       getCharacterSummaryController: this.getCharacterSummaryController,
@@ -180,6 +181,31 @@ class WowController {
         3600
       );
 
+      return res.status(200).json({ success: true, errors: [], data });
+    } catch (error: any) {
+      console.log(error.message);
+      return res.status(500).json({
+        success: false,
+        errors: [{ message: error.message }],
+        data: null,
+      });
+    }
+  };
+
+  private getCharacterStatisticsController = async (
+    req: Request<{}, {}, {}, GetCharacterInfoInput>,
+    res: Response
+  ) => {
+    try {
+      //@ts-ignore
+      const user_id = req.user_id;
+      const { region, char_name, realm_slug } = req.query;
+      const data = await this.wowServiceList.getCharacterStatisticsService({
+        user_id,
+        region,
+        char_name,
+        realm_slug,
+      });
       return res.status(200).json({ success: true, errors: [], data });
     } catch (error: any) {
       console.log(error.message);

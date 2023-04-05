@@ -4,6 +4,7 @@ import {
   CharacterEquipment,
   CharacterMedia,
   CharacterQuests,
+  CharacterStatistics,
   CharacterSummary,
   EquipmentMedia,
   EquippedItemsEntity,
@@ -18,9 +19,9 @@ class WowDB {
       getCharacterMedia: this.getCharacterMedia,
       getCharacterEquipment: this.getCharacterEquipment,
       getCharacterQuests: this.getCharacterQuests,
+      getCharacterStatistics: this.getCharacterStatistics,
       getCharacterDungeons: this.getCharacterDungeons,
       getProtectedCharacterData: this.getProtectedCharacterData,
-      getItemInfo: this.getItemInfo,
       getCharacterSummary: this.getCharacterSummary,
       getEquipmentMedia: this.getEquipmentMedia,
     });
@@ -84,19 +85,6 @@ class WowDB {
     return characterSummary.data;
   };
 
-  private getItemInfo = async ({
-    region,
-    item_id,
-  }: {
-    region: string;
-    item_id: string;
-  }) => {
-    const result = await axios.get(
-      `https://${region}.api.blizzard.com/data/wow/media/item/${item_id}?namespace=static-10.0.7_48520-${region}`
-    );
-    return result.data;
-  };
-
   private getEquipmentMedia = async ({
     equipment,
     access_token,
@@ -157,6 +145,23 @@ class WowDB {
     });
 
     return { equipment: equipmentResult, media: mediaResult };
+  };
+
+  private getCharacterStatistics = async ({
+    region,
+    realm_slug,
+    char_name,
+    access_token,
+  }: {
+    region: string;
+    realm_slug: string;
+    char_name: string;
+    access_token: string;
+  }) => {
+    const result = await axios.get<CharacterStatistics>(
+      `https://${region}.api.blizzard.com/profile/wow/character/${realm_slug}/${char_name}/statistics?namespace=profile-${region}&locale=en_US&access_token=${access_token}`
+    );
+    return result.data;
   };
 
   private getCharacterDungeons = async ({

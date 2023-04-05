@@ -14,6 +14,7 @@ const {
   getCharacterMediaController,
   getProtectedCharacterController,
   getCharacterEquipmentController,
+  getCharacterStatisticsController,
   getCharacterDungeonsController,
   getCharacterQuestsController,
   getCharacterSummaryController,
@@ -47,6 +48,13 @@ wowRouter.get(
   requireAuth,
   validateResource(getCharacterInfoSchema),
   getCharacterEquipmentController
+);
+
+wowRouter.get(
+  "/character-statistics",
+  requireAuth,
+  validateResource(getCharacterInfoSchema),
+  getCharacterStatisticsController
 );
 
 wowRouter.get(

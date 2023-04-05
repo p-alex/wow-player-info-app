@@ -28,7 +28,7 @@ function App() {
             }
           />
           <Route
-            path="characters/:realm_slug/:char_name"
+            path="characters/:realm_slug/:class/:char_name"
             element={
               <RequireAuth>
                 <Character />

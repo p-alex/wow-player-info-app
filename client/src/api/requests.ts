@@ -6,6 +6,7 @@ import { CharacterSummary } from "../interfaces/CharacterSummary";
 import makeUrl from "../utils/makeUrl";
 import { EquipmentType } from "../utils/normalizeEquipment";
 import normalizeMediaAssets from "../utils/normalizeMediaAssets";
+import { ICharacterStatistics } from "../interfaces/CharacterStatistics";
 
 interface RequestInfo {
   region: string;
@@ -65,6 +66,23 @@ export const getCharacterEquipment = (info: RequestInfo) =>
         realm_slug: info.realm_slug,
         char_name: info.char_name,
         toFetch: "equipment",
+      }),
+      {
+        headers: {
+          Authorization: "Bearer " + info.access_token,
+        },
+      }
+    )
+    .then((res) => res.data.data);
+
+export const getCharacterStatistics = (info: RequestInfo) =>
+  axiosPrivate
+    .get<DefaultResponse<ICharacterStatistics>>(
+      makeUrl({
+        region: info.region,
+        realm_slug: info.realm_slug,
+        char_name: info.char_name,
+        toFetch: "statistics",
       }),
       {
         headers: {

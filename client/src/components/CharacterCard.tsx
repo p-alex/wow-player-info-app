@@ -8,6 +8,8 @@ const CharacterCard = ({ character }: { character: CharactersEntity }) => {
         "/characters/" +
         character.realm.slug +
         "/" +
+        character.playable_class.name.toLowerCase() +
+        "/" +
         character.name.toLowerCase()
       }
     >
