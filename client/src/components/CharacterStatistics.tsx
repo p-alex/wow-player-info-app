@@ -13,6 +13,7 @@ import {
   CriticalStrikeIcon,
   VersatilityIcon,
 } from "../svgs";
+import { useRegion } from "../context/RegionContext";
 
 const CharacterStatistics = ({
   character,
@@ -20,12 +21,18 @@ const CharacterStatistics = ({
   character: CharacterSummary;
 }) => {
   const { auth } = useAuth();
+  const { region } = useRegion();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["character-statistics", character.realm.slug, character.name],
+    queryKey: [
+      "character-statistics",
+      region,
+      character.realm.slug,
+      character.name,
+    ],
     queryFn: () =>
       getCharacterStatistics({
-        region: "eu",
+        region,
         realm_slug: character.realm.slug,
         char_name: character.name.toLowerCase(),
         access_token: auth.accessToken,

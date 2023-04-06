@@ -5,9 +5,11 @@ import { getCharacterSummary } from "../api/requests";
 import { useAuth } from "../context/AuthContext";
 import CharacterContextProvider from "../context/CharacterContext";
 import CharacterStatistics from "../components/CharacterStatistics";
+import { useRegion } from "../context/RegionContext";
 
 const Character = () => {
   const { auth } = useAuth();
+  const { region } = useRegion();
 
   const { realm_slug, char_name } = useParams() as {
     realm_slug: string;
@@ -18,7 +20,7 @@ const Character = () => {
     queryKey: ["character-summary", char_name],
     queryFn: () =>
       getCharacterSummary({
-        region: "eu",
+        region,
         realm_slug,
         char_name,
         access_token: auth.accessToken,

@@ -7,6 +7,8 @@ import makeUrl from "../utils/makeUrl";
 import { EquipmentType } from "../utils/normalizeEquipment";
 import normalizeMediaAssets from "../utils/normalizeMediaAssets";
 import { ICharacterStatistics } from "../interfaces/CharacterStatistics";
+import { Summary } from "../interfaces/Summary";
+import { SERVER_BASE_URL } from "../utils/server_base_url";
 
 interface RequestInfo {
   region: string;
@@ -14,6 +16,22 @@ interface RequestInfo {
   char_name: string;
   access_token: string;
 }
+
+export const getAccountSummary = ({
+  region,
+  accessToken,
+}: {
+  region: string;
+  accessToken: string;
+}) =>
+  axiosPrivate
+    .get<DefaultResponse<Summary>>(
+      SERVER_BASE_URL + "/profile/summary?region=" + region,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
 
 export const getCharacterSummary = (info: RequestInfo) =>
   axiosPrivate

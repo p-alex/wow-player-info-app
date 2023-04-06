@@ -4,6 +4,7 @@ import { OAuthDbListType } from "../oauth";
 interface ICharacterInfo {
   user_id: string;
   region: string;
+
   char_name: string;
   realm_slug: string;
 }
@@ -11,6 +12,7 @@ interface ICharacterInfo {
 interface IProtectedCharacterInfo {
   user_id: string;
   region: string;
+
   realm_id: string;
   char_id: string;
 }
@@ -42,7 +44,13 @@ class WowService {
     });
   }
 
-  private getSummaryService = async ({ user_id }: { user_id: string }) => {
+  private getSummaryService = async ({
+    user_id,
+    region,
+  }: {
+    user_id: string;
+    region: string;
+  }) => {
     const bn_access_token = await this.oauthDbList.findBattleNetAccessToken({
       user_id,
     });
@@ -52,6 +60,7 @@ class WowService {
 
     const { data } = await this.wowDbList.getSummary({
       access_token: bn_access_token,
+      region,
     });
 
     return data;

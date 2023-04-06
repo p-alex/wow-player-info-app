@@ -4,6 +4,7 @@ import { redis } from "../../../redis";
 import {
   GetCharacterInfoInput,
   GetProtectedCharacterInfoInput,
+  GetSummaryInput,
 } from "./wow.validation";
 
 class WowController {
@@ -26,12 +27,17 @@ class WowController {
     });
   }
 
-  private getSummaryController = async (req: Request, res: Response) => {
+  private getSummaryController = async (
+    req: Request<{}, {}, {}, GetSummaryInput>,
+    res: Response
+  ) => {
     try {
       // @ts-ignore
       const user_id = req.user_id;
 
-      const cached = await redis.get("summary-" + user_id);
+      const { region } = req.query;
+
+      const cached = await redis.get("summary-" + user_id + "-" + region);
 
       if (cached) {
         return res
@@ -39,9 +45,12 @@ class WowController {
           .json({ success: true, errors: [], data: JSON.parse(cached) });
       }
 
-      const data = await this.wowServiceList.getSummaryService({ user_id });
+      const data = await this.wowServiceList.getSummaryService({
+        user_id,
+        region,
+      });
 
-      await redis.set("summary-" + user_id, JSON.stringify(data), "EX", 3600);
+      await redis.set("summary-" + user_id, JSON.stringify(data), "EX", 2400); // 40min
 
       return res.status(200).json({ success: true, errors: [], data });
     } catch (error: any) {
@@ -64,7 +73,14 @@ class WowController {
       const { char_name, realm_slug, region } = req.query;
 
       const cached = await redis.get(
-        "character-media-" + user_id + "-" + char_name + "-" + realm_slug
+        "character-media-" +
+          user_id +
+          "-" +
+          char_name +
+          "-" +
+          realm_slug +
+          "-" +
+          region
       );
 
       if (cached) {
@@ -75,6 +91,7 @@ class WowController {
 
       const data = await this.wowServiceList.getCharacterMediaService({
         region,
+
         user_id,
         char_name,
         realm_slug,
@@ -84,7 +101,7 @@ class WowController {
         "character-media-" + user_id + "-" + char_name + "-" + realm_slug,
         JSON.stringify(data),
         "EX",
-        3600
+        2400 // 40min
       );
 
       return res.status(200).json({ success: true, errors: [], data });
@@ -109,6 +126,7 @@ class WowController {
       const data = await this.wowServiceList.getCharacterSummaryService({
         user_id,
         region,
+
         realm_slug,
         char_name,
       });
@@ -134,6 +152,7 @@ class WowController {
       const data = await this.wowServiceList.getProtectedCharacterService({
         user_id,
         region,
+
         realm_id,
         char_id,
       });
@@ -158,7 +177,14 @@ class WowController {
       const { region, char_name, realm_slug } = req.query;
 
       const cached = await redis.get(
-        "character-equipment-" + user_id + "-" + char_name + "-" + realm_slug
+        "character-equipment-" +
+          user_id +
+          "-" +
+          char_name +
+          "-" +
+          realm_slug +
+          "-" +
+          region
       );
 
       if (cached) {
@@ -170,6 +196,7 @@ class WowController {
       const data = await this.wowServiceList.getCharacterEquipmentService({
         user_id,
         region,
+
         char_name,
         realm_slug,
       });
@@ -178,7 +205,7 @@ class WowController {
         "character-equipment-" + user_id + "-" + char_name + "-" + realm_slug,
         JSON.stringify(data),
         "EX",
-        3600
+        2400 // 40min
       );
 
       return res.status(200).json({ success: true, errors: [], data });
@@ -203,6 +230,7 @@ class WowController {
       const data = await this.wowServiceList.getCharacterStatisticsService({
         user_id,
         region,
+
         char_name,
         realm_slug,
       });
@@ -228,6 +256,7 @@ class WowController {
       const data = await this.wowServiceList.getCharacterDungeonsService({
         user_id,
         region,
+
         char_name,
         realm_slug,
       });
@@ -252,6 +281,7 @@ class WowController {
       const { region, char_name, realm_slug } = req.query;
       const data = await this.wowServiceList.getCharacterQuestsService({
         user_id,
+
         region,
         char_name,
         realm_slug,

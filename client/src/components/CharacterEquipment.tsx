@@ -1,18 +1,25 @@
 import ItemSlot from "./ItemSlot";
 import { useQuery } from "@tanstack/react-query";
-import { getCharacterEquipment, getCharacterMedia } from "../api/requests";
+import { getCharacterEquipment } from "../api/requests";
 import { useAuth } from "../context/AuthContext";
 import { CharacterSummary } from "../interfaces/CharacterSummary";
 import Spinner from "./Spinner/Spinner";
+import { useRegion } from "../context/RegionContext";
 
 const CharacterEquipment = ({ character }: { character: CharacterSummary }) => {
   const { auth } = useAuth();
+  const { region } = useRegion();
 
   const characterEquipment = useQuery({
-    queryKey: ["character-equipment", character.realm.slug, character.name],
+    queryKey: [
+      "character-equipment",
+      region,
+      character.realm.slug,
+      character.name,
+    ],
     queryFn: () =>
       getCharacterEquipment({
-        region: "eu",
+        region,
         realm_slug: character.realm.slug,
         char_name: character.name.toLowerCase(),
         access_token: auth.accessToken,

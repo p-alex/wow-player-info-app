@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { useRegion } from "../context/RegionContext";
 
 const Layout = () => {
+  const { region } = useRegion();
   return (
     <div className="max-w-[2400px] mx-auto">
       <Navbar />
-      <div>
-        <Outlet />
-      </div>
+      <div>{region && <Outlet />}</div>
     </div>
   );
 };

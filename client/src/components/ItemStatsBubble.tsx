@@ -11,7 +11,7 @@ const ItemStatsBubble = ({
   statsPos: "left" | "right";
 }) => {
   const itemQuality = stats?.quality.name as keyof typeof QUALITY_COLORS;
-  const showStatsToTop = "-top-2 translate-y-[-100%]";
+  const showStatsToTop = "-top-[8px] translate-y-[-100%]";
   const showStatsToLeft = "right-0 translate-x-[-55px]";
   const showStatsToRight = "left-0 translate-x-[55px]";
   return (

@@ -4,15 +4,17 @@ import { useQuery } from "@tanstack/react-query";
 import { getCharacterMedia } from "../api/requests";
 import { useAuth } from "../context/AuthContext";
 import CharacterEquipment from "./CharacterEquipment";
+import { useRegion } from "../context/RegionContext";
 
 const CharacterDisplay = ({ character }: { character: CharacterSummary }) => {
   const { auth } = useAuth();
+  const { region } = useRegion();
 
   const characterMedia = useQuery({
     queryKey: ["character-media", character.realm.slug, character.name],
     queryFn: () =>
       getCharacterMedia({
-        region: "eu",
+        region,
         realm_slug: character.realm.slug,
         char_name: character.name.toLowerCase(),
         access_token: auth.accessToken,

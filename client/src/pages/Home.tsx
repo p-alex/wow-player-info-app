@@ -1,24 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { axiosPrivate } from "../api";
 import CharacterCard from "../components/CharacterCard";
 import Spinner from "../components/Spinner/Spinner";
-import { DefaultResponse } from "../containers/RefreshTokenOnLoad";
-import { Summary } from "../interfaces/Summary";
-import { SERVER_BASE_URL } from "../utils/server_base_url";
 import { useAuth } from "../context/AuthContext";
+import { getAccountSummary } from "../api/requests";
+import { useRegion } from "../context/RegionContext";
+import RegionLocale from "../components/RegionLocale";
 
 const Home = () => {
   const [search, setSearch] = useState("");
   const { auth } = useAuth();
+
+  const { region } = useRegion();
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ["char-list", auth.battleTag],
-    queryFn: () =>
-      axiosPrivate
-        .get<DefaultResponse<Summary>>(SERVER_BASE_URL + "/profile/summary", {
-          headers: { Authorization: `Bearer ${auth.accessToken}` },
-        })
-        .then((res) => res.data),
+    queryKey: ["char-list", auth.battleTag, region],
+    queryFn: () => getAccountSummary({ region, accessToken: auth.accessToken }),
     staleTime: 1000 * 60 * 60,
     retry: false,
   });
@@ -41,6 +38,8 @@ const Home = () => {
   return (
     <main className="p-4">
       {isLoading && <Spinner />}
+      <RegionLocale />
+
       <section>
         <h2 className="text-4xl mb-4">
           Character list ({data.data?.wow_accounts[0].characters.length})

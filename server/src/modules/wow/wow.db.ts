@@ -12,6 +12,13 @@ import {
   Summary,
 } from "./wow.interfaces";
 
+interface GetDbInfo {
+  region: string;
+  char_name: string;
+  realm_slug: string;
+  access_token: string;
+}
+
 class WowDB {
   makeWowDB() {
     return Object.freeze({
@@ -27,9 +34,15 @@ class WowDB {
     });
   }
 
-  private getSummary = async ({ access_token }: { access_token: string }) => {
+  private getSummary = async ({
+    access_token,
+    region,
+  }: {
+    access_token: string;
+    region: string;
+  }) => {
     const result = await axios.get<Summary[]>(
-      `https://eu.api.blizzard.com/profile/user/wow?namespace=profile-eu&locale=en_US&access_token=${access_token}`
+      `https://${region}.api.blizzard.com/profile/user/wow?namespace=profile-${region}&locale=en_US&access_token=${access_token}`
     );
     return result;
   };
@@ -39,12 +52,7 @@ class WowDB {
     char_name,
     realm_slug,
     access_token,
-  }: {
-    region: string;
-    char_name: string;
-    realm_slug: string;
-    access_token: string;
-  }) => {
+  }: GetDbInfo) => {
     const result = await axios.get<CharacterMedia>(
       `https://${region}.api.blizzard.com/profile/wow/character/${realm_slug.toLowerCase()}/${char_name.toLowerCase()}/character-media?namespace=profile-${region}&locale=en_US&access_token=${access_token}`
     );
@@ -73,12 +81,7 @@ class WowDB {
     char_name,
     realm_slug,
     access_token,
-  }: {
-    region: string;
-    char_name: string;
-    realm_slug: string;
-    access_token: string;
-  }) => {
+  }: GetDbInfo) => {
     const characterSummary = await axios.get<CharacterSummary>(
       `https://${region}.api.blizzard.com/profile/wow/character/${realm_slug}/${char_name}?namespace=profile-${region}&locale=en_US&access_token=${access_token}`
     );
@@ -95,18 +98,16 @@ class WowDB {
     let mediaResult = {} as { [key: string]: string };
 
     for (let i = 0; i < equipment.length; i++) {
-      const itemMediaRequest = await axios.get<EquipmentMedia>(
-        equipment[i].media.key.href,
-        {
-          headers: {
-            Authorization: "Bearer " + access_token,
-          },
-        }
-      );
-      mediaResult[equipment[i].slot.name.toLowerCase().replace(" ", "")] =
-        itemMediaRequest.data.assets
-          ? itemMediaRequest.data.assets[0].value
-          : "";
+      const mediaLink = equipment[i].media.key.href;
+      const itemMediaRequest = await axios.get<EquipmentMedia>(mediaLink, {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      });
+      const itemName = equipment[i].slot.name.toLowerCase().replace(" ", "");
+      mediaResult[itemName] = itemMediaRequest.data.assets
+        ? itemMediaRequest.data.assets[0].value
+        : "";
     }
 
     return mediaResult;
@@ -117,12 +118,7 @@ class WowDB {
     realm_slug,
     char_name,
     access_token,
-  }: {
-    region: string;
-    realm_slug: string;
-    char_name: string;
-    access_token: string;
-  }) => {
+  }: GetDbInfo) => {
     const equipmentResponse = await axios.get<CharacterEquipment>(
       `https://${region}.api.blizzard.com/profile/wow/character/${realm_slug}/${char_name}/equipment?namespace=profile-${region}&locale=en_US&access_token=${access_token}`
     );
@@ -152,12 +148,7 @@ class WowDB {
     realm_slug,
     char_name,
     access_token,
-  }: {
-    region: string;
-    realm_slug: string;
-    char_name: string;
-    access_token: string;
-  }) => {
+  }: GetDbInfo) => {
     const result = await axios.get<CharacterStatistics>(
       `https://${region}.api.blizzard.com/profile/wow/character/${realm_slug}/${char_name}/statistics?namespace=profile-${region}&locale=en_US&access_token=${access_token}`
     );
@@ -169,12 +160,7 @@ class WowDB {
     realm_slug,
     char_name,
     access_token,
-  }: {
-    region: string;
-    realm_slug: string;
-    char_name: string;
-    access_token: string;
-  }) => {
+  }: GetDbInfo) => {
     const result = await axios.get<CharacterDungeons>(
       `https://${region}.api.blizzard.com/profile/wow/character/${realm_slug}/${char_name}/encounters/dungeons?namespace=profile-${region}&locale=en_US&access_token=${access_token}`
     );
@@ -186,12 +172,7 @@ class WowDB {
     realm_slug,
     char_name,
     access_token,
-  }: {
-    region: string;
-    realm_slug: string;
-    char_name: string;
-    access_token: string;
-  }) => {
+  }: GetDbInfo) => {
     const result = await axios.get<CharacterQuests>(
       `https://${region}.api.blizzard.com/profile/wow/character/${realm_slug}/${char_name}/quests?namespace=profile-${region}&locale=en_US&access_token=${access_token}`
     );
