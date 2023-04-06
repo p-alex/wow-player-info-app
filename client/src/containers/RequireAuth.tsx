@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 const RequireAuth = ({ children }: { children: ReactElement<any, any> }) => {
   const { auth } = useAuth();
 
-  if (!auth.accessToken) {
+  if (!auth.id) {
     return <Navigate to="/login" replace={true} />;
   }
 

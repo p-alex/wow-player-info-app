@@ -17,9 +17,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <BrowserRouter>
       <AuthProvider>
         <RegionProvider>
-          <React.StrictMode>
-            <App />
-          </React.StrictMode>
+          <App />
         </RegionProvider>
       </AuthProvider>
       <ReactQueryDevtools />

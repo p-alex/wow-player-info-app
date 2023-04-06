@@ -2,7 +2,7 @@ import { CharacterSummary } from "../interfaces/CharacterSummary";
 
 const CharacterHeader = ({ character }: { character: CharacterSummary }) => {
   return (
-    <header className="flex items-center w-full p-8">
+    <header className="flex items-center w-full p-4">
       <div className="flex items-center gap-4">
         <img
           src={

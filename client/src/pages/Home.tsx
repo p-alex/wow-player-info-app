@@ -5,7 +5,6 @@ import Spinner from "../components/Spinner/Spinner";
 import { useAuth } from "../context/AuthContext";
 import { getAccountSummary } from "../api/requests";
 import { useRegion } from "../context/RegionContext";
-import RegionLocale from "../components/RegionLocale";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -38,7 +37,6 @@ const Home = () => {
   return (
     <main className="p-4">
       {isLoading && <Spinner />}
-      <RegionLocale />
 
       <section>
         <h2 className="text-4xl mb-4">

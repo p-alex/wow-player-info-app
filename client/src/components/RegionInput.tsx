@@ -1,6 +1,6 @@
 import { useRegion } from "../context/RegionContext";
 
-const RegionLocale = () => {
+const RegionInput = () => {
   const { region, handleSetRegion } = useRegion();
 
   return (
@@ -29,4 +29,4 @@ const RegionLocale = () => {
   );
 };
 
-export default RegionLocale;
+export default RegionInput;
