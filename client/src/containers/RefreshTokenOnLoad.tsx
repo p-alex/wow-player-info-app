@@ -2,6 +2,7 @@ import { useEffect, useState, ReactElement } from "react";
 import { axiosPublic } from "../api";
 import Spinner from "../components/Spinner/Spinner";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export interface DefaultResponse<Data> {
   success: boolean;
@@ -14,7 +15,8 @@ const RefreshTokenOnLoad = ({
 }: {
   children: ReactElement<any, any>;
 }) => {
-  const { handleSetAuth } = useAuth();
+  const navigate = useNavigate();
+  const { handleSetAuth, handleResetAuth } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRefreshToken = async () => {
@@ -33,6 +35,8 @@ const RefreshTokenOnLoad = ({
       });
     } catch (error) {
       console.error(error);
+      handleResetAuth();
+      navigate("/login");
     } finally {
       setIsLoading(false);
     }

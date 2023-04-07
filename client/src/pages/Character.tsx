@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import CharacterDisplay from "../components/CharacterDisplay";
@@ -6,8 +7,11 @@ import { useAuth } from "../context/AuthContext";
 import CharacterContextProvider from "../context/CharacterContext";
 import CharacterStatistics from "../components/CharacterStatistics";
 import { useRegion } from "../context/RegionContext";
+import { AxiosError } from "axios";
+import ErrorMessage from "../components/ErrorMessage";
 
 const Character = () => {
+  const [error, setError] = useState("");
   const { auth } = useAuth();
   const { region } = useRegion();
 
@@ -16,7 +20,7 @@ const Character = () => {
     char_name: string;
   };
 
-  const characterSummary = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["character-summary", char_name],
     queryFn: () =>
       getCharacterSummary({
@@ -25,6 +29,11 @@ const Character = () => {
         char_name,
         access_token: auth.accessToken,
       }),
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        setError(error.response?.data.errors[0].message);
+      }
+    },
     retry: false,
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 60,
@@ -32,10 +41,11 @@ const Character = () => {
 
   return (
     <main className="max-w-[1100px] mx-auto p-4 animate-fadeIn">
-      {characterSummary?.data && (
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      {!isLoading && !error && data && (
         <CharacterContextProvider>
-          <CharacterDisplay character={characterSummary.data} />
-          <CharacterStatistics character={characterSummary.data} />
+          <CharacterDisplay character={data} />
+          <CharacterStatistics character={data} />
         </CharacterContextProvider>
       )}
     </main>

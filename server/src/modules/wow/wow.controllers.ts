@@ -57,7 +57,7 @@ class WowController {
       console.log(error);
       return res.status(500).json({
         success: false,
-        error: [{ message: error.message }],
+        errors: [{ message: error.message }],
         data: null,
       });
     }
@@ -91,7 +91,6 @@ class WowController {
 
       const data = await this.wowServiceList.getCharacterMediaService({
         region,
-
         user_id,
         char_name,
         realm_slug,
@@ -152,7 +151,6 @@ class WowController {
       const data = await this.wowServiceList.getProtectedCharacterService({
         user_id,
         region,
-
         realm_id,
         char_id,
       });

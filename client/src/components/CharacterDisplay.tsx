@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { CharacterSummary } from "../interfaces/CharacterSummary";
 import CharacterHeader from "./CharacterHeader";
 import { useQuery } from "@tanstack/react-query";
@@ -5,12 +6,15 @@ import { getCharacterMedia } from "../api/requests";
 import { useAuth } from "../context/AuthContext";
 import CharacterEquipment from "./CharacterEquipment";
 import { useRegion } from "../context/RegionContext";
+import { AxiosError } from "axios";
+import ErrorMessage from "./ErrorMessage";
 
 const CharacterDisplay = ({ character }: { character: CharacterSummary }) => {
+  const [error, setError] = useState("");
   const { auth } = useAuth();
   const { region } = useRegion();
 
-  const characterMedia = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["character-media", character.realm.slug, character.name],
     queryFn: () =>
       getCharacterMedia({
@@ -19,6 +23,11 @@ const CharacterDisplay = ({ character }: { character: CharacterSummary }) => {
         char_name: character.name.toLowerCase(),
         access_token: auth.accessToken,
       }),
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        setError(error.response?.data.errors[0].message);
+      }
+    },
     retry: false,
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 60,
@@ -27,11 +36,16 @@ const CharacterDisplay = ({ character }: { character: CharacterSummary }) => {
   return (
     <div
       className="aspect-[4/3] bg-cover bg-center bg-no-repeat mx-auto p-2 rounded-md"
-      style={{ backgroundImage: `url(${characterMedia.data?.["main"]})` }}
+      style={{ backgroundImage: `url(${data?.["main"]})` }}
       id={"character-display"}
     >
-      <CharacterHeader character={character} />
-      <CharacterEquipment character={character} />
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      {!isLoading && (
+        <>
+          <CharacterHeader character={character} />
+          <CharacterEquipment character={character} />
+        </>
+      )}
     </div>
   );
 };

@@ -13,10 +13,14 @@ const validateResource = (schema: AnyZodObject) => {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        console.log(error.message);
-        return res
-          .status(400)
-          .json({ success: false, errors: error.flatten(), data: null });
+        const errors = error.issues.map((issue) => {
+          return { message: issue.message };
+        });
+        return res.status(400).json({
+          success: false,
+          errors,
+          data: null,
+        });
       }
     }
   };

@@ -5,6 +5,7 @@ import validateResource from "../../../middleware/validateResource";
 import {
   getCharacterInfoSchema,
   getProtectedCharacterInfoSchema,
+  getSummarySchema,
 } from "./wow.validation";
 
 const wowRouter = express.Router();
@@ -20,7 +21,12 @@ const {
   getCharacterSummaryController,
 } = wowControllerList;
 
-wowRouter.get("/summary", requireAuth, getSummaryController);
+wowRouter.get(
+  "/summary",
+  requireAuth,
+  validateResource(getSummarySchema),
+  getSummaryController
+);
 
 wowRouter.get(
   "/character-media",

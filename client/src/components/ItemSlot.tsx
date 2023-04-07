@@ -54,6 +54,7 @@ const ItemSlot = ({
         onMouseLeave={() => setIsStatsBubbleActive(false)}
         onClick={() => handleSelectItemStats(stats)}
         id={stats?.item.id.toString()}
+        aria-label={stats ? stats.name : "empty slot"}
       >
         {isStatsBubbleActive && (
           <ItemStatsBubble

@@ -27,15 +27,15 @@ const ItemStatsModal = ({
 
   useDisableScroll();
   return (
-    <div className="fixed left-0 top-0 w-full h-full flex sm:items-center sm:justify-center z-10">
+    <div className="fixed left-0 top-0 w-full h-full flex sm:items-center sm:justify-center z-10 ">
       <FocusTrapRedirectFocus element={firstFocusableElement} />
       <div
-        className="absolute left-0 right-0 w-full h-full bg-black bg-opacity-70 z-20"
+        className="absolute left-0 right-0 w-full h-full bg-black bg-opacity-70 z-20 "
         onClick={handleCloseModal}
       ></div>
       {stats && (
         <div
-          className={`flex flex-col w-full sm:max-w-[450px] p-8 text-xl bg-gray-900 border z-30 ${
+          className={`flex flex-col w-full sm:max-w-[450px] p-8 text-xl bg-gray-900 border z-30 overflow-y-scroll ${
             itemQuality
               ? QUALITY_COLORS[itemQuality]?.border
               : "border-slate-700"
