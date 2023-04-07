@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useAuth } from "../context/AuthContext";
-
+import { BiLogOut } from "react-icons/bi";
 const LogoutBtn = () => {
   const { handleResetAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
@@ -15,11 +15,11 @@ const LogoutBtn = () => {
 
   return (
     <button
-      className="px-4 py-2 bg-blue-700 text-white rounded w-max hover:bg-blue-600 active:opacity-80 uppercase border border-blue-600 shadow"
+      className="flex items-center gap-2 p-1 w-max text-blue-500"
       disabled={isLoading}
       onClick={() => mutate()}
     >
-      Logout
+      <BiLogOut style={{ width: 20, height: 20 }} /> <span>Logout</span>
     </button>
   );
 };

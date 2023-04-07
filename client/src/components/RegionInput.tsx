@@ -4,20 +4,20 @@ const RegionInput = () => {
   const { region, handleSetRegion } = useRegion();
 
   return (
-    <div className="flex gap-8 w-full items-center justify-center flex-wrap">
+    <div className="flex gap-8 items-center justify-center">
       <div
-        className={`flex flex-col gap-2 ${
+        className={`flex flex-col gap-1 ${
           !region ? "animate-pulse active:animate-none " : ""
         }`}
       >
         <label htmlFor="region">Region</label>
         <select
-          className="bg-slate-900 border border-slate-700 p-2 cursor-pointer"
+          className="bg-slate-900 border border-slate-700 p-2 cursor-pointer rounded-md"
           value={region}
           onChange={handleSetRegion}
           id={"region"}
         >
-          <option value={""}>Choose your region</option>
+          <option value={""}>Choose a region</option>
           <option value={"eu"}>Europe</option>
           <option value={"us"}>North America</option>
           <option value={"kr"}>Korea</option>

@@ -196,13 +196,19 @@ class WowController {
       const data = await this.wowServiceList.getCharacterEquipmentService({
         user_id,
         region,
-
         char_name,
         realm_slug,
       });
 
       await redis.set(
-        "character-equipment-" + user_id + "-" + char_name + "-" + realm_slug,
+        "character-equipment-" +
+          user_id +
+          "-" +
+          char_name +
+          "-" +
+          realm_slug +
+          "-" +
+          region,
         JSON.stringify(data),
         "EX",
         2400 // 40min

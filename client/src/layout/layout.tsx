@@ -6,9 +6,8 @@ import RegionInput from "../components/RegionInput";
 const Layout = () => {
   const { region } = useRegion();
   return (
-    <div className="max-w-[2400px] mx-auto">
+    <div className="max-w-[1100px] mx-auto">
       <Navbar />
-      <RegionInput />
 
       <div>{region && <Outlet />}</div>
     </div>
