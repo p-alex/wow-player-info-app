@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Character from "./pages/Character";
 import Layout from "./layout/Layout";
+
 function App() {
   return (
     <RefreshTokenOnLoad>
