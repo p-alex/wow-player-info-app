@@ -105,18 +105,18 @@ const CharacterStatistics = ({
             </div>
 
             <div className="flex items-center gap-2">
-              {<MasteryIcon />}
-              <div className="flex flex-col">
-                <p>{data?.mastery.rating}%</p>
-                <h3 className="text-2xl font-bold">Mastery</h3>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
               {<VersatilityIcon />}
               <div className="flex flex-col">
                 <p>{data?.versatility}</p>
                 <h3 className="text-2xl font-bold">Versatility</h3>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {<MasteryIcon />}
+              <div className="flex flex-col">
+                <p>{data?.mastery.rating}%</p>
+                <h3 className="text-2xl font-bold">Mastery</h3>
               </div>
             </div>
 

@@ -10,8 +10,6 @@ const RegionProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const [region, setRegion] = useState("");
 
-  const regionSetCount = useRef<number>(1);
-
   const handleSetRegion = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRegion(e.target.value);
     window.localStorage.setItem("region", e.target.value);

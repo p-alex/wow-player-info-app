@@ -41,6 +41,7 @@ const CharacterEquipment = ({ character }: { character: CharacterSummary }) => {
   return (
     <>
       {error && <ErrorMessage>{error}</ErrorMessage>}
+      {isLoading && <Spinner />}
       {!isLoading && !error && (
         <div className="md:p-12 w-full mx-auto">
           {isLoading && <Spinner />}

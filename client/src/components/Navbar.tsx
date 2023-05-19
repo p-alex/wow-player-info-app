@@ -1,13 +1,10 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import RegionInput from "./RegionInput";
-import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import LogoutBtn from "./LogoutBtn";
 
 const Navbar = () => {
   const { auth } = useAuth();
-  const [isDropDownActive, setIsDropDownActive] = useState(false);
   return (
     <nav className="w-full flex flex-col justify-between p-4">
       <div className="w-full relative flex justify-between items-center gap-4 mb-4">
