@@ -5,7 +5,7 @@ import RequireAuth from "./containers/RequireAuth";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Character from "./pages/Character";
-import Layout from "./layout/Layout";
+import Layout from "./Layout/Layout";
 
 function App() {
   return (
