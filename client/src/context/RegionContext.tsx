@@ -1,5 +1,4 @@
-import { createContext, useContext, useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const RegionContext = createContext({
   region: "",
@@ -7,7 +6,6 @@ const RegionContext = createContext({
 });
 
 const RegionProvider = ({ children }: { children: React.ReactNode }) => {
-  const navigate = useNavigate();
   const [region, setRegion] = useState("");
 
   const handleSetRegion = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -19,10 +17,6 @@ const RegionProvider = ({ children }: { children: React.ReactNode }) => {
     const region = window.localStorage.getItem("region");
     if (region) setRegion(region);
   }, []);
-
-  useEffect(() => {
-    navigate("/", { replace: true });
-  }, [region]);
 
   return (
     <RegionContext.Provider value={{ region, handleSetRegion }}>

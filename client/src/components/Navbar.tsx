@@ -6,22 +6,27 @@ import LogoutBtn from "./LogoutBtn";
 const Navbar = () => {
   const { auth } = useAuth();
   return (
-    <nav className="w-full flex flex-col justify-between p-4">
-      <div className="w-full relative flex justify-between items-center gap-4 mb-4">
-        <RegionInput />
-        <div className="flex flex-col items-end">
-          <p className="flex">{auth.battleTag} </p>
-          <LogoutBtn />
-        </div>
-      </div>
-      <ul className="flex gap-4 border border-slate-700 bg-slate-900 rounded-md">
-        <li>
-          <Link to={"/"} className="block hover:underline py-2 px-4">
-            Character list
-          </Link>
-        </li>
-      </ul>
-    </nav>
+    <>
+      {auth.accessToken && (
+        <nav className="w-full flex flex-col justify-between p-4">
+          <div className="w-full relative flex justify-between items-center gap-4 mb-4">
+            <RegionInput />
+
+            <div className="flex flex-col items-end">
+              <p className="flex">{auth.battleTag} </p>
+              <LogoutBtn />
+            </div>
+          </div>
+          <ul className="flex gap-4 border border-slate-700 bg-slate-900 rounded-md">
+            <li>
+              <Link to={"/"} className="block hover:underline py-2 px-4">
+                Character list
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      )}
+    </>
   );
 };
 

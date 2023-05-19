@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CharacterDisplay from "../components/CharacterDisplay";
 import { getCharacterSummary } from "../api/requests";
 import { useAuth } from "../context/AuthContext";
@@ -22,6 +22,7 @@ const Character = () => {
 
   const { isLoading, data } = useQuery({
     queryKey: ["character-summary", char_name],
+    enabled: auth.accessToken !== "",
     queryFn: () =>
       getCharacterSummary({
         region,
@@ -41,8 +42,17 @@ const Character = () => {
 
   return (
     <main className="max-w-[1100px] mx-auto p-4 animate-fadeIn">
+      {!auth.accessToken && (
+        <p>
+          You must{" "}
+          <Link to={"/login"} className="text-blue-500 underline">
+            Login
+          </Link>
+          .
+        </p>
+      )}
       {error && <ErrorMessage>{error}</ErrorMessage>}
-      {!isLoading && !error && data && (
+      {auth.accessToken && !isLoading && !error && data && (
         <CharacterContextProvider>
           <CharacterDisplay character={data} />
           <CharacterStatistics character={data} />

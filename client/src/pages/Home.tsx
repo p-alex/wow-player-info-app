@@ -7,6 +7,7 @@ import { getAccountSummary } from "../api/requests";
 import { useRegion } from "../context/RegionContext";
 import { AxiosError } from "axios";
 import ErrorMessage from "../components/ErrorMessage";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -19,6 +20,7 @@ const Home = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["char-list", auth.battleTag, region],
+    enabled: auth.accessToken !== "",
     queryFn: () => getAccountSummary({ region, accessToken: auth.accessToken }),
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -42,6 +44,15 @@ const Home = () => {
 
   return (
     <main className="p-4">
+      {!auth.accessToken && (
+        <p>
+          You must{" "}
+          <Link to={"/login"} className="text-blue-500 underline">
+            Login
+          </Link>
+          .
+        </p>
+      )}
       {isLoading && <Spinner />}
       {error && <ErrorMessage>{error}</ErrorMessage>}
       {!error && !isLoading && (

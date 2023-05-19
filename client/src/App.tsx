@@ -1,11 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import RedirectIfAuth from "./containers/RedirectIfAuth";
-import RefreshTokenOnLoad from "./containers/RefreshTokenOnLoad";
-import RequireAuth from "./containers/RequireAuth";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Character from "./pages/Character";
 import Layout from "./Layout";
+import RefreshTokenOnLoad from "./containers/RefreshTokenOnLoad";
+import RedirectIfAuth from "./containers/RedirectIfAuth";
 
 function App() {
   return (
@@ -20,21 +19,10 @@ function App() {
           }
         />
         <Route element={<Layout />}>
-          <Route
-            path="/"
-            element={
-              <RequireAuth>
-                <Home />
-              </RequireAuth>
-            }
-          />
+          <Route path="/" element={<Home />} />
           <Route
             path="/characters/:realm_slug/:class/:char_name"
-            element={
-              <RequireAuth>
-                <Character />
-              </RequireAuth>
-            }
+            element={<Character />}
           />
         </Route>
         <Route path="*" element={<p>Page does not exist</p>}></Route>
