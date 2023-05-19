@@ -93,7 +93,6 @@ class OAuthDb {
         },
       },
     });
-    console.log(result);
     return { success: true };
   };
 

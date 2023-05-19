@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Character from "./pages/Character";
 import Layout from "./Layout";
-//ping
+
 function App() {
   return (
     <RefreshTokenOnLoad>

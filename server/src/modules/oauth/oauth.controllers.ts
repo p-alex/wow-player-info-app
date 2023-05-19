@@ -36,10 +36,12 @@ class OAuthController {
         sameSite: "strict",
         maxAge: ms(process.env.REFRESH_TOKEN_EXPIRE!),
       });
-      return res.redirect("http://localhost:3000");
+      return res.redirect(process.env.CLIENT_URL!);
     } catch (error: any) {
       console.log(error);
-      return res.redirect(`http://localhost:3000/login?error=${error.message}`);
+      return res.redirect(
+        `${process.env.CLIENT_URL!}/login?error=${error.message}`
+      );
     }
   };
 
