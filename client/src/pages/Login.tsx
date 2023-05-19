@@ -1,7 +1,7 @@
 import { SiBattledotnet } from "react-icons/si";
 import { SERVER_BASE_URL } from "../utils/server_base_url";
 
-const AUTH_URL = `https://eu.oauth.battle.net/authorize?response_type=code&client_id=ad05bb42365044978429c9960736350f&scope=wow.profile openid&redirect_uri=${SERVER_BASE_URL}/oauth/battlenet`;
+const AUTH_URL = `https://eu.oauth.battle.net/authorize?response_type=code&client_id=ad05bb42365044978429c9960736350f&scope=wow.profile openid&redirect_uri=${SERVER_BASE_URL}/api/v1/oauth/battlenet`;
 
 const Login = () => {
   return (
