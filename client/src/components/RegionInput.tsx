@@ -1,7 +1,18 @@
+import { useRef, useEffect } from "react";
 import { useRegion } from "../context/RegionContext";
-
+import { useNavigate } from "react-router-dom";
 const RegionInput = () => {
+  const navigate = useNavigate();
   const { region, handleSetRegion } = useRegion();
+  const count = useRef<number>(0);
+  useEffect(() => {
+    if (count.current > 0) {
+      navigate("/");
+    }
+    return () => {
+      count.current++;
+    };
+  }, [region]);
 
   return (
     <div className="flex gap-8 items-center justify-center">

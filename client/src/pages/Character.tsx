@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import CharacterDisplay from "../components/CharacterDisplay";
@@ -20,7 +20,7 @@ const Character = () => {
     char_name: string;
   };
 
-  const { isLoading, data } = useQuery({
+  const { isLoading, data, refetch } = useQuery({
     queryKey: ["character-summary", char_name],
     enabled: auth.accessToken !== "",
     queryFn: () =>
