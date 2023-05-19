@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import { useRegion } from "../context/RegionContext";
+import Navbar from "./components/Navbar";
+import { useRegion } from "./context/RegionContext";
 
 const Layout = () => {
   const { region } = useRegion();
