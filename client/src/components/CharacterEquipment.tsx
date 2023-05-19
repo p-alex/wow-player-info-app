@@ -42,9 +42,8 @@ const CharacterEquipment = ({ character }: { character: CharacterSummary }) => {
     <>
       {error && <ErrorMessage>{error}</ErrorMessage>}
       {isLoading && <Spinner />}
-      {!isLoading && !error && (
-        <div className="md:p-12  min-h-[520px]  w-full mx-auto">
-          {isLoading && <Spinner />}
+      {!error && (
+        <div className="md:p-12 w-full mx-auto">
           <div className="w-full flex justify-between md:justify-around">
             <div className="flex flex-col gap-2">
               <ItemSlot stats={data?.equipment.head} image={data?.media.head} />
