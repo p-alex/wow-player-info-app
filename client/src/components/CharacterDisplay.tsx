@@ -40,12 +40,8 @@ const CharacterDisplay = ({ character }: { character: CharacterSummary }) => {
       id={"character-display"}
     >
       {error && <ErrorMessage>{error}</ErrorMessage>}
-      {!isLoading && (
-        <>
-          <CharacterHeader character={character} />
-          <CharacterEquipment character={character} />
-        </>
-      )}
+      <CharacterHeader character={character} />
+      <CharacterEquipment character={character} />
     </div>
   );
 };
