@@ -12,7 +12,7 @@ function App() {
     <RefreshTokenOnLoad>
       <Routes>
         <Route
-          path="login"
+          path="/login"
           element={
             <RedirectIfAuth>
               <Login />
@@ -29,7 +29,7 @@ function App() {
             }
           />
           <Route
-            path="characters/:realm_slug/:class/:char_name"
+            path="/characters/:realm_slug/:class/:char_name"
             element={
               <RequireAuth>
                 <Character />
