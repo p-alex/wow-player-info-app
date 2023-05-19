@@ -46,7 +46,7 @@ const Home = () => {
       {error && <ErrorMessage>{error}</ErrorMessage>}
       {!error && !isLoading && (
         <section>
-          <div className="flex w-full items-center justify-between mb-4">
+          <div className="flex flex-col-reverse gap-4 sm:flex-row w-full sm:items-center justify-between mb-4">
             <h2 className="text-2xl">
               Character list ({data?.data?.wow_accounts[0].characters.length})
             </h2>

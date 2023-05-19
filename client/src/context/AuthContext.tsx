@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 interface IAuth {
   id: string;
   battleTag: string;
@@ -18,6 +18,7 @@ const AuthContext = createContext({
 });
 
 const AuthProvider = (props: { children: React.ReactNode }) => {
+  const navigate = useNavigate();
   const [auth, setAuth] = useState<IAuth>({
     id: "",
     battleTag: "",
@@ -43,6 +44,7 @@ const AuthProvider = (props: { children: React.ReactNode }) => {
       battleTag: "",
       accessToken: "",
     }));
+    navigate("/login");
   };
 
   return (
