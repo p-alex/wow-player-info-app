@@ -30,12 +30,12 @@ class OAuthController {
       const data = await this.oauthServiceList.loginService({
         authorizationCode: code,
       });
-      res.cookie("refresh_token", data.refreshToken, {
+      res.cookie("wi-rt", data.refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
         maxAge: ms(process.env.REFRESH_TOKEN_EXPIRE!),
-        domain: process.env.SERVER_DOMAIN,
+        // domain: process.env.SERVER_DOMAIN,
       });
       return res.redirect(process.env.CLIENT_URL!);
     } catch (error: any) {
@@ -55,12 +55,12 @@ class OAuthController {
       });
 
       if (data.statusCode === 200) {
-        res.cookie("refresh_token", data.data?.newRefreshToken, {
+        res.cookie("wi-rt", data.data?.newRefreshToken, {
           maxAge: ms(process.env.REFRESH_TOKEN_EXPIRE!),
           sameSite: "strict",
           secure: true,
           httpOnly: true,
-          domain: process.env.SERVER_DOMAIN,
+          // domain: process.env.SERVER_DOMAIN,
         });
 
         return res.status(200).json({
@@ -74,12 +74,12 @@ class OAuthController {
       }
 
       if (data.statusCode === 403) {
-        res.cookie("refresh_token", "", {
+        res.cookie("wi-rt", "", {
           maxAge: 0,
           sameSite: "strict",
           secure: true,
           httpOnly: true,
-          domain: process.env.SERVER_DOMAIN,
+          // domain: process.env.SERVER_DOMAIN,
         });
 
         return res
@@ -102,11 +102,11 @@ class OAuthController {
     try {
       const refreshToken = req.cookies.refresh_token;
       await this.oauthServiceList.logoutService({ refreshToken });
-      res.cookie("refresh_token", "", {
+      res.cookie("wi-rt", "", {
         httpOnly: true,
         secure: true,
         maxAge: 0,
-        domain: process.env.SERVER_DOMAIN,
+        // domain: process.env.SERVER_DOMAIN,
       });
       return res.status(200).json({ success: true, errors: [], data: null });
     } catch (error: any) {
