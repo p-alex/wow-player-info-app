@@ -30,7 +30,7 @@ class OAuthController {
       const data = await this.oauthServiceList.loginService({
         authorizationCode: code,
       });
-      res.cookie("wi-rt", data.refreshToken, {
+      res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME!, data.refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
@@ -48,20 +48,24 @@ class OAuthController {
 
   private refreshTokenController = async (req: Request, res: Response) => {
     try {
-      const refreshToken = req.cookies.refresh_token;
+      const refreshToken = req.cookies[process.env.REFRESH_TOKEN_COOKIE_NAME!];
 
       const data = await this.oauthServiceList.refreshTokenService({
         refreshToken,
       });
 
       if (data.statusCode === 200) {
-        res.cookie("wi-rt", data.data?.newRefreshToken, {
-          maxAge: ms(process.env.REFRESH_TOKEN_EXPIRE!),
-          sameSite: "strict",
-          secure: true,
-          httpOnly: true,
-          domain: process.env.SERVER_DOMAIN,
-        });
+        res.cookie(
+          process.env.REFRESH_TOKEN_COOKIE_NAME!,
+          data.data?.newRefreshToken,
+          {
+            maxAge: ms(process.env.REFRESH_TOKEN_EXPIRE!),
+            sameSite: "strict",
+            secure: true,
+            httpOnly: true,
+            domain: process.env.SERVER_DOMAIN,
+          }
+        );
 
         return res.status(200).json({
           success: true,
@@ -74,7 +78,7 @@ class OAuthController {
       }
 
       if (data.statusCode === 403) {
-        res.cookie("wi-rt", "", {
+        res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME!, "", {
           maxAge: 0,
           sameSite: "strict",
           secure: true,
@@ -102,7 +106,7 @@ class OAuthController {
     try {
       const refreshToken = req.cookies.refresh_token;
       await this.oauthServiceList.logoutService({ refreshToken });
-      res.cookie("wi-rt", "", {
+      res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME!, "", {
         httpOnly: true,
         secure: true,
         maxAge: 0,
