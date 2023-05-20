@@ -35,6 +35,7 @@ class OAuthController {
         secure: true,
         sameSite: "strict",
         maxAge: ms(process.env.REFRESH_TOKEN_EXPIRE!),
+        domain: ".pistolalex.com",
       });
       return res.redirect(process.env.CLIENT_URL!);
     } catch (error: any) {
@@ -59,6 +60,7 @@ class OAuthController {
           sameSite: "strict",
           secure: true,
           httpOnly: true,
+          domain: ".pistolalex.com",
         });
 
         return res.status(200).json({
@@ -77,6 +79,7 @@ class OAuthController {
           sameSite: "strict",
           secure: true,
           httpOnly: true,
+          domain: ".pistolalex.com",
         });
 
         return res
@@ -103,6 +106,7 @@ class OAuthController {
         httpOnly: true,
         secure: true,
         maxAge: 0,
+        domain: ".pistolalex.com",
       });
       return res.status(200).json({ success: true, errors: [], data: null });
     } catch (error: any) {
