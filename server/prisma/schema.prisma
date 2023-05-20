@@ -11,14 +11,15 @@ datasource db {
 }
 
 model Users {
-  id         String     @id
-  battleTag  String     @unique
-  created_at DateTime   @default(now())
-  Sessions   Sessions[]
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  battleUserId String     @unique
+  battleTag    String     @unique
+  created_at   DateTime   @default(now())
+  Sessions     Sessions[]
 }
 
 model Sessions {
-  user_id         String
+  user_id         String   @db.Uuid
   token           String   @db.VarChar(150)
   bn_access_token String   @db.VarChar(150)
   user            Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)

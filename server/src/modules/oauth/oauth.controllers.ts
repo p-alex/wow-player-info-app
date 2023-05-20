@@ -104,7 +104,7 @@ class OAuthController {
 
   logoutController = async (req: Request, res: Response) => {
     try {
-      const refreshToken = req.cookies.refresh_token;
+      const refreshToken = req.cookies[process.env.REFRESH_TOKEN_COOKIE_NAME!];
       await this.oauthServiceList.logoutService({ refreshToken });
       res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME!, "", {
         httpOnly: true,

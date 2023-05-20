@@ -5,6 +5,7 @@ class OAuthDb {
     return Object.freeze({
       createUser: this.createUser,
       findUserById: this.findUserById,
+      findUserByBattleUserId: this.findUserByBattleUserId,
       createSession: this.createSession,
       updateSession: this.updateSession,
       deleteSession: this.deleteSession,
@@ -15,15 +16,14 @@ class OAuthDb {
   }
 
   private createUser = async ({
-    id,
+    battleUserId,
     battleTag,
   }: {
-    id: string;
+    battleUserId: string;
     battleTag: string;
   }) => {
     const result = await prisma.users.create({
-      data: { id, battleTag },
-      select: { id: true },
+      data: { battleUserId, battleTag },
     });
     return result;
   };
@@ -31,6 +31,17 @@ class OAuthDb {
   private findUserById = async ({ id }: { id: string }) => {
     const result = await prisma.users.findUnique({
       where: { id },
+    });
+    return result;
+  };
+
+  private findUserByBattleUserId = async ({
+    battleUserId,
+  }: {
+    battleUserId: string;
+  }) => {
+    const result = await prisma.users.findUnique({
+      where: { battleUserId },
     });
     return result;
   };

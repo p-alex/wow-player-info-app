@@ -57,17 +57,20 @@ class OAuthService {
       access_token: bn_access_token,
     });
 
-    const user = await this.oauthDbList.findUserById({ id: userInfo.id });
+    let user = await this.oauthDbList.findUserByBattleUserId({
+      battleUserId: userInfo.id,
+    });
 
     if (!user) {
-      await this.oauthDbList.createUser({
-        id: userInfo.id,
+      const result = await this.oauthDbList.createUser({
+        battleUserId: userInfo.id,
         battleTag: userInfo.battletag,
       });
+      user = result;
     }
 
     const refreshToken = this.signJwt({
-      payload: { id: userInfo.id },
+      payload: { id: user.id },
       secret: process.env.REFRESH_TOKEN_SECRET!,
       options: {
         expiresIn: process.env.REFRESH_TOKEN_EXPIRE!,
@@ -77,7 +80,7 @@ class OAuthService {
     const hashedRefreshToken = this.fastHash(refreshToken);
 
     await this.oauthDbList.createSession({
-      user_id: userInfo.id,
+      user_id: user.id,
       hashedRefreshToken,
       bn_access_token,
       expiry_date: Date.now() + ms(process.env.REFRESH_TOKEN_EXPIRE!),
@@ -85,7 +88,7 @@ class OAuthService {
 
     return {
       user: {
-        id: userInfo.id,
+        id: user.id,
         battleTag: userInfo.battletag,
       },
       refreshToken,

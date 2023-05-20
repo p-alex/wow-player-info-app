@@ -1,6 +1,7 @@
 -- CreateTable
 CREATE TABLE "Users" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "battleUserId" TEXT NOT NULL,
     "battleTag" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -9,7 +10,7 @@ CREATE TABLE "Users" (
 
 -- CreateTable
 CREATE TABLE "Sessions" (
-    "user_id" TEXT NOT NULL,
+    "user_id" UUID NOT NULL,
     "token" VARCHAR(150) NOT NULL,
     "bn_access_token" VARCHAR(150) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -17,6 +18,9 @@ CREATE TABLE "Sessions" (
 
     CONSTRAINT "Sessions_pkey" PRIMARY KEY ("token")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Users_battleUserId_key" ON "Users"("battleUserId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Users_battleTag_key" ON "Users"("battleTag");
