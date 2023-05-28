@@ -36,7 +36,9 @@ const CharacterDisplay = ({ character }: { character: CharacterSummary }) => {
   return (
     <div
       className="aspect-[4/3] bg-cover bg-center bg-no-repeat mx-auto p-2 rounded-md"
-      style={{ backgroundImage: `url(${data?.["main"]})` }}
+      style={{
+        backgroundImage: `url(${data?.main ? data.main : data?.["main-raw"]})`,
+      }}
       id={"character-display"}
     >
       {error && <ErrorMessage>{error}</ErrorMessage>}
