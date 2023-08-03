@@ -1,11 +1,7 @@
-import { Request, Response } from "express";
-import { WowServiceListType } from ".";
-import { redis } from "../../../redis";
-import {
-  GetCharacterInfoInput,
-  GetProtectedCharacterInfoInput,
-  GetSummaryInput,
-} from "./wow.validation";
+import { Request, Response } from 'express';
+import { WowServiceListType } from '.';
+import { redis } from '../../../redis';
+import { GetCharacterInfoInput, GetProtectedCharacterInfoInput, GetSummaryInput } from './wow.validation';
 
 class WowController {
   private wowServiceList: WowServiceListType;
@@ -27,22 +23,17 @@ class WowController {
     });
   }
 
-  private getSummaryController = async (
-    req: Request<{}, {}, {}, GetSummaryInput>,
-    res: Response
-  ) => {
+  private getSummaryController = async (req: Request<{}, {}, {}, GetSummaryInput>, res: Response) => {
     try {
       // @ts-ignore
       const user_id = req.user_id;
 
       const { region } = req.query;
 
-      const cached = await redis.get("summary-" + user_id + "-" + region);
+      const cached = await redis.get('summary-' + user_id + '-' + region);
 
       if (cached) {
-        return res
-          .status(200)
-          .json({ success: true, errors: [], data: JSON.parse(cached) });
+        return res.status(200).json({ success: true, errors: [], data: JSON.parse(cached) });
       }
 
       const data = await this.wowServiceList.getSummaryService({
@@ -50,7 +41,7 @@ class WowController {
         region,
       });
 
-      await redis.set("summary-" + user_id, JSON.stringify(data), "EX", 2400); // 40min
+      await redis.set('summary-' + user_id, JSON.stringify(data), 'EX', 2400); // 40min
 
       return res.status(200).json({ success: true, errors: [], data });
     } catch (error: any) {
@@ -63,30 +54,16 @@ class WowController {
     }
   };
 
-  private getCharacterMediaController = async (
-    req: Request<{}, {}, {}, GetCharacterInfoInput>,
-    res: Response
-  ) => {
+  private getCharacterMediaController = async (req: Request<{}, {}, {}, GetCharacterInfoInput>, res: Response) => {
     try {
       // @ts-ignore
       const user_id = req.user_id;
       const { char_name, realm_slug, region } = req.query;
 
-      const cached = await redis.get(
-        "character-media-" +
-          user_id +
-          "-" +
-          char_name +
-          "-" +
-          realm_slug +
-          "-" +
-          region
-      );
+      const cached = await redis.get('character-media-' + user_id + '-' + char_name + '-' + realm_slug + '-' + region);
 
       if (cached) {
-        return res
-          .status(200)
-          .json({ success: true, errors: [], data: JSON.parse(cached) });
+        return res.status(200).json({ success: true, errors: [], data: JSON.parse(cached) });
       }
 
       const data = await this.wowServiceList.getCharacterMediaService({
@@ -97,10 +74,10 @@ class WowController {
       });
 
       await redis.set(
-        "character-media-" + user_id + "-" + char_name + "-" + realm_slug,
+        'character-media-' + user_id + '-' + char_name + '-' + realm_slug,
         JSON.stringify(data),
-        "EX",
-        2400 // 40min
+        'EX',
+        2400, // 40min
       );
 
       return res.status(200).json({ success: true, errors: [], data });
@@ -114,10 +91,7 @@ class WowController {
     }
   };
 
-  private getCharacterSummaryController = async (
-    req: Request<{}, {}, {}, GetCharacterInfoInput>,
-    res: Response
-  ) => {
+  private getCharacterSummaryController = async (req: Request<{}, {}, {}, GetCharacterInfoInput>, res: Response) => {
     try {
       //@ts-ignore
       const user_id = req.user_id;
@@ -125,7 +99,6 @@ class WowController {
       const data = await this.wowServiceList.getCharacterSummaryService({
         user_id,
         region,
-
         realm_slug,
         char_name,
       });
@@ -140,10 +113,7 @@ class WowController {
     }
   };
 
-  private getProtectedCharacterController = async (
-    req: Request<{}, {}, {}, GetProtectedCharacterInfoInput>,
-    res: Response
-  ) => {
+  private getProtectedCharacterController = async (req: Request<{}, {}, {}, GetProtectedCharacterInfoInput>, res: Response) => {
     try {
       //@ts-ignore
       const user_id = req.user_id;
@@ -165,30 +135,16 @@ class WowController {
     }
   };
 
-  private getCharacterEquipmentController = async (
-    req: Request<{}, {}, {}, GetCharacterInfoInput>,
-    res: Response
-  ) => {
+  private getCharacterEquipmentController = async (req: Request<{}, {}, {}, GetCharacterInfoInput>, res: Response) => {
     try {
       //@ts-ignore
       const user_id = req.user_id;
       const { region, char_name, realm_slug } = req.query;
 
-      const cached = await redis.get(
-        "character-equipment-" +
-          user_id +
-          "-" +
-          char_name +
-          "-" +
-          realm_slug +
-          "-" +
-          region
-      );
+      const cached = await redis.get('character-equipment-' + user_id + '-' + char_name + '-' + realm_slug + '-' + region);
 
       if (cached) {
-        return res
-          .status(200)
-          .json({ success: true, errors: [], data: JSON.parse(cached) });
+        return res.status(200).json({ success: true, errors: [], data: JSON.parse(cached) });
       }
 
       const data = await this.wowServiceList.getCharacterEquipmentService({
@@ -199,17 +155,10 @@ class WowController {
       });
 
       await redis.set(
-        "character-equipment-" +
-          user_id +
-          "-" +
-          char_name +
-          "-" +
-          realm_slug +
-          "-" +
-          region,
+        'character-equipment-' + user_id + '-' + char_name + '-' + realm_slug + '-' + region,
         JSON.stringify(data),
-        "EX",
-        2400 // 40min
+        'EX',
+        2400, // 40min
       );
 
       return res.status(200).json({ success: true, errors: [], data });
@@ -223,10 +172,7 @@ class WowController {
     }
   };
 
-  private getCharacterStatisticsController = async (
-    req: Request<{}, {}, {}, GetCharacterInfoInput>,
-    res: Response
-  ) => {
+  private getCharacterStatisticsController = async (req: Request<{}, {}, {}, GetCharacterInfoInput>, res: Response) => {
     try {
       //@ts-ignore
       const user_id = req.user_id;
@@ -249,10 +195,7 @@ class WowController {
     }
   };
 
-  private getCharacterDungeonsController = async (
-    req: Request<{}, {}, {}, GetCharacterInfoInput>,
-    res: Response
-  ) => {
+  private getCharacterDungeonsController = async (req: Request<{}, {}, {}, GetCharacterInfoInput>, res: Response) => {
     try {
       //@ts-ignore
       const user_id = req.user_id;
@@ -275,10 +218,7 @@ class WowController {
     }
   };
 
-  private getCharacterQuestsController = async (
-    req: Request<{}, {}, {}, GetCharacterInfoInput>,
-    res: Response
-  ) => {
+  private getCharacterQuestsController = async (req: Request<{}, {}, {}, GetCharacterInfoInput>, res: Response) => {
     try {
       //@ts-ignore
       const user_id = req.user_id;

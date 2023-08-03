@@ -1,14 +1,14 @@
-import { axiosPrivate } from ".";
-import { DefaultResponse } from "../containers/RefreshTokenOnLoad";
-import { EquippedItemsEntity } from "../interfaces/CharacterEquipment";
-import { CharacterMedia } from "../interfaces/CharacterMedia";
-import { CharacterSummary } from "../interfaces/CharacterSummary";
-import makeUrl from "../utils/makeUrl";
-import { EquipmentType } from "../utils/normalizeEquipment";
-import normalizeMediaAssets from "../utils/normalizeMediaAssets";
-import { ICharacterStatistics } from "../interfaces/CharacterStatistics";
-import { Summary } from "../interfaces/Summary";
-import { SERVER_BASE_URL } from "../utils/server_base_url";
+import { axiosPrivate } from '.';
+import { DefaultResponse } from '../containers/RefreshTokenOnLoad';
+import { EquippedItemsEntity } from '../interfaces/CharacterEquipment';
+import { CharacterMedia } from '../interfaces/CharacterMedia';
+import { CharacterSummary } from '../interfaces/CharacterSummary';
+import makeUrl from '../utils/makeUrl';
+import { EquipmentType } from '../utils/normalizeEquipment';
+import normalizeMediaAssets from '../utils/normalizeMediaAssets';
+import { ICharacterStatistics } from '../interfaces/CharacterStatistics';
+import { Summary } from '../interfaces/Summary';
+import { SERVER_BASE_URL } from '../utils/server_base_url';
 
 interface RequestInfo {
   region: string;
@@ -17,20 +17,11 @@ interface RequestInfo {
   access_token: string;
 }
 
-export const getAccountSummary = ({
-  region,
-  accessToken,
-}: {
-  region: string;
-  accessToken: string;
-}) =>
+export const getAccountSummary = ({ region, accessToken }: { region: string; accessToken: string }) =>
   axiosPrivate
-    .get<DefaultResponse<Summary>>(
-      SERVER_BASE_URL + "/profile/summary?region=" + region,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    )
+    .get<DefaultResponse<Summary>>(SERVER_BASE_URL + '/profile/summary?region=' + region, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
     .then((res) => res.data);
 
 export const getCharacterSummary = (info: RequestInfo) =>
@@ -40,13 +31,13 @@ export const getCharacterSummary = (info: RequestInfo) =>
         region: info.region,
         realm_slug: info.realm_slug,
         char_name: info.char_name,
-        toFetch: "summary",
+        toFetch: 'summary',
       }),
       {
         headers: {
-          Authorization: "Bearer " + info.access_token,
+          Authorization: 'Bearer ' + info.access_token,
         },
-      }
+      },
     )
     .then((res) => res.data.data);
 
@@ -57,13 +48,13 @@ export const getCharacterMedia = (info: RequestInfo) =>
         region: info.region,
         realm_slug: info.realm_slug,
         char_name: info.char_name,
-        toFetch: "media",
+        toFetch: 'media',
       }),
       {
         headers: {
-          Authorization: "Bearer " + info.access_token,
+          Authorization: 'Bearer ' + info.access_token,
         },
-      }
+      },
     )
     .then((res) => {
       if (!res || !res?.data || !res?.data?.data) return null;
@@ -83,13 +74,13 @@ export const getCharacterEquipment = (info: RequestInfo) =>
         region: info.region,
         realm_slug: info.realm_slug,
         char_name: info.char_name,
-        toFetch: "equipment",
+        toFetch: 'equipment',
       }),
       {
         headers: {
-          Authorization: "Bearer " + info.access_token,
+          Authorization: 'Bearer ' + info.access_token,
         },
-      }
+      },
     )
     .then((res) => res.data.data);
 
@@ -100,12 +91,12 @@ export const getCharacterStatistics = (info: RequestInfo) =>
         region: info.region,
         realm_slug: info.realm_slug,
         char_name: info.char_name,
-        toFetch: "statistics",
+        toFetch: 'statistics',
       }),
       {
         headers: {
-          Authorization: "Bearer " + info.access_token,
+          Authorization: 'Bearer ' + info.access_token,
         },
-      }
+      },
     )
     .then((res) => res.data.data);

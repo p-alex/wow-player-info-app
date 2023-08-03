@@ -1,4 +1,4 @@
-import md5 from "md5";
+import md5 from 'md5';
 
 const fastHash = (string: string) => {
   return md5(string);

@@ -1,5 +1,5 @@
-import { Character } from "./CharacterMedia";
-import { Links } from "./Summary";
+import { Character } from './CharacterMedia';
+import { Links } from './Summary';
 
 export interface ICharacterStatistics {
   _links: Links;

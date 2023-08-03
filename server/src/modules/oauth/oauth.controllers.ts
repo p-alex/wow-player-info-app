@@ -1,15 +1,11 @@
-import { Request, Response } from "express";
-import { OAuthServiceListType } from ".";
-import ms from "ms";
+import { Request, Response } from 'express';
+import { OAuthServiceListType } from '.';
+import ms from 'ms';
 
 class OAuthController {
   private oauthServiceList: OAuthServiceListType;
 
-  constructor({
-    oauthServiceList,
-  }: {
-    oauthServiceList: OAuthServiceListType;
-  }) {
+  constructor({ oauthServiceList }: { oauthServiceList: OAuthServiceListType }) {
     this.oauthServiceList = oauthServiceList;
   }
 
@@ -21,10 +17,7 @@ class OAuthController {
     });
   }
 
-  private loginController = async (
-    req: Request<{}, {}, {}, { code: string }>,
-    res: Response
-  ) => {
+  private loginController = async (req: Request<{}, {}, {}, { code: string }>, res: Response) => {
     try {
       const { code } = req.query;
       const data = await this.oauthServiceList.loginService({
@@ -33,16 +26,14 @@ class OAuthController {
       res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME!, data.refreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: 'strict',
         maxAge: ms(process.env.REFRESH_TOKEN_EXPIRE!),
         domain: process.env.SERVER_DOMAIN,
       });
       return res.redirect(process.env.CLIENT_URL!);
     } catch (error: any) {
       console.log(error);
-      return res.redirect(
-        `${process.env.CLIENT_URL!}/login?error=${error.message}`
-      );
+      return res.redirect(`${process.env.CLIENT_URL!}/login?error=${error.message}`);
     }
   };
 
@@ -55,17 +46,13 @@ class OAuthController {
       });
 
       if (data.statusCode === 200) {
-        res.cookie(
-          process.env.REFRESH_TOKEN_COOKIE_NAME!,
-          data.data?.newRefreshToken,
-          {
-            maxAge: ms(process.env.REFRESH_TOKEN_EXPIRE!),
-            sameSite: "strict",
-            secure: true,
-            httpOnly: true,
-            domain: process.env.SERVER_DOMAIN,
-          }
-        );
+        res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME!, data.data?.newRefreshToken, {
+          maxAge: ms(process.env.REFRESH_TOKEN_EXPIRE!),
+          sameSite: 'strict',
+          secure: true,
+          httpOnly: true,
+          domain: process.env.SERVER_DOMAIN,
+        });
 
         return res.status(200).json({
           success: true,
@@ -78,20 +65,18 @@ class OAuthController {
       }
 
       if (data.statusCode === 403) {
-        res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME!, "", {
+        res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME!, '', {
           maxAge: 0,
-          sameSite: "strict",
+          sameSite: 'strict',
           secure: true,
           httpOnly: true,
           domain: process.env.SERVER_DOMAIN,
         });
 
-        return res
-          .status(data.statusCode)
-          .json({ success: false, errors: data.errors, data: data.data });
+        return res.status(data.statusCode).json({ success: false, errors: data.errors, data: data.data });
       }
 
-      throw new Error("Something went wrong...");
+      throw new Error('Something went wrong...');
     } catch (error: any) {
       console.log(error);
       return res.status(500).json({
@@ -106,7 +91,7 @@ class OAuthController {
     try {
       const refreshToken = req.cookies[process.env.REFRESH_TOKEN_COOKIE_NAME!];
       await this.oauthServiceList.logoutService({ refreshToken });
-      res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME!, "", {
+      res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME!, '', {
         httpOnly: true,
         secure: true,
         maxAge: 0,

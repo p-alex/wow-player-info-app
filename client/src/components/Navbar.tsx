@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import RegionInput from "./RegionInput";
-import LogoutBtn from "./LogoutBtn";
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import RegionInput from './RegionInput';
+import LogoutBtn from './LogoutBtn';
 
 const Navbar = () => {
   const { auth } = useAuth();
@@ -19,7 +19,7 @@ const Navbar = () => {
           </div>
           <ul className="flex gap-4 border border-slate-700 bg-slate-900 rounded-md">
             <li>
-              <Link to={"/"} className="block hover:underline py-2 px-4">
+              <Link to={'/'} className="block hover:underline py-2 px-4">
                 Character list
               </Link>
             </li>

@@ -1,9 +1,9 @@
-import ms from "ms";
-import { OAuthDbListType } from ".";
-import { FastHashType } from "../../utils/fastHash";
-import { GetBattleNetAccessTokenType } from "../../utils/getBattleNetAccessToken";
-import { GetBattleNetUserInfoType } from "../../utils/getBattleNetUserInfo";
-import { SignJwtType, VerifyJwtType } from "../../utils/jwt";
+import ms from 'ms';
+import { OAuthDbListType } from '.';
+import { FastHashType } from '../../utils/fastHash';
+import { GetBattleNetAccessTokenType } from '../../utils/getBattleNetAccessToken';
+import { GetBattleNetUserInfoType } from '../../utils/getBattleNetUserInfo';
+import { SignJwtType, VerifyJwtType } from '../../utils/jwt';
 
 class OAuthService {
   private oauthDbList: OAuthDbListType;
@@ -44,11 +44,7 @@ class OAuthService {
     });
   }
 
-  private loginService = async ({
-    authorizationCode,
-  }: {
-    authorizationCode: string;
-  }) => {
+  private loginService = async ({ authorizationCode }: { authorizationCode: string }) => {
     const bn_access_token = await this.getBattleNetAccessToken({
       authorizationCode,
     });
@@ -95,11 +91,7 @@ class OAuthService {
     };
   };
 
-  private refreshTokenService = async ({
-    refreshToken,
-  }: {
-    refreshToken: string;
-  }) => {
+  private refreshTokenService = async ({ refreshToken }: { refreshToken: string }) => {
     let tokenPayload: { id: string };
 
     try {
@@ -121,7 +113,7 @@ class OAuthService {
     if (!user) {
       return {
         statusCode: 403,
-        errors: [{ message: "No user found" }],
+        errors: [{ message: 'No user found' }],
         data: null,
       };
     }
@@ -157,11 +149,7 @@ class OAuthService {
     };
   };
 
-  private logoutService = async ({
-    refreshToken,
-  }: {
-    refreshToken: string;
-  }) => {
+  private logoutService = async ({ refreshToken }: { refreshToken: string }) => {
     const hashedRefreshToken = this.fastHash(refreshToken);
 
     await this.oauthDbList.deleteSession({ hashedRefreshToken });

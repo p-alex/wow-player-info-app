@@ -1,5 +1,5 @@
-import { SiBattledotnet } from "react-icons/si";
-import { SERVER_BASE_URL } from "../utils/server_base_url";
+import { SiBattledotnet } from 'react-icons/si';
+import { SERVER_BASE_URL } from '../utils/server_base_url';
 
 const AUTH_URL = `https://eu.oauth.battle.net/authorize?response_type=code&client_id=ad05bb42365044978429c9960736350f&scope=wow.profile openid&redirect_uri=${SERVER_BASE_URL}/oauth/battlenet`;
 
@@ -10,15 +10,9 @@ const Login = () => {
         <header className="grayscale bg-[url('/images/wow-header.webp')] h-[150px] bg-cover bg-[center_top_-1rem]"></header>
         <div className="p-8">
           <h1 className="text-4xl mb-4 text-white">WoW Inspect</h1>
-          <p className="mb-4 text-slate-300">
-            WoW Inspect is an app that uses the battle.net API's to display
-            World Of Warcraft profile data.
-          </p>
+          <p className="mb-4 text-slate-300">WoW Inspect is an app that uses the battle.net API's to display World Of Warcraft profile data.</p>
 
-          <p className="mb-8 text-slate-300">
-            In order to see your profile, you need to login with your battle.net
-            account.
-          </p>
+          <p className="mb-8 text-slate-300">In order to see your profile, you need to login with your battle.net account.</p>
 
           <a
             href={AUTH_URL}

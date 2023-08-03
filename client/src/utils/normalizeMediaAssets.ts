@@ -1,7 +1,7 @@
-import { AssetsEntity } from "../interfaces/CharacterMedia";
+import { AssetsEntity } from '../interfaces/CharacterMedia';
 
 export type Assets = {
-  [key in "main-raw" | "main" | "inset" | "profile"]: string;
+  [key in 'main-raw' | 'main' | 'inset' | 'profile']: string;
 };
 
 const normalizeMediaAssets = ({ assets }: { assets: AssetsEntity[] }) => {

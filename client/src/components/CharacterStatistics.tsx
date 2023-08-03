@@ -1,40 +1,21 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { CharacterSummary } from "../interfaces/CharacterSummary";
-import { getCharacterStatistics } from "../api/requests";
-import { useAuth } from "../context/AuthContext";
-import {
-  HealthIcon,
-  IntellectIcon,
-  StaminaIcon,
-  AgilityIcon,
-  StrengthIcon,
-  HasteIcon,
-  MasteryIcon,
-  CriticalStrikeIcon,
-  VersatilityIcon,
-} from "../svgs";
-import { useRegion } from "../context/RegionContext";
-import { AxiosError } from "axios";
-import ErrorMessage from "./ErrorMessage";
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { CharacterSummary } from '../interfaces/CharacterSummary';
+import { getCharacterStatistics } from '../api/requests';
+import { useAuth } from '../context/AuthContext';
+import { HealthIcon, IntellectIcon, StaminaIcon, AgilityIcon, StrengthIcon, HasteIcon, MasteryIcon, CriticalStrikeIcon, VersatilityIcon } from '../svgs';
+import { useRegion } from '../context/RegionContext';
+import { AxiosError } from 'axios';
+import ErrorMessage from './ErrorMessage';
 
-const CharacterStatistics = ({
-  character,
-}: {
-  character: CharacterSummary;
-}) => {
-  const [error, setError] = useState("");
+const CharacterStatistics = ({ character }: { character: CharacterSummary }) => {
+  const [error, setError] = useState('');
   const { auth } = useAuth();
   const { region } = useRegion();
 
   const { data, isLoading } = useQuery({
-    enabled: typeof character.id === "number",
-    queryKey: [
-      "character-statistics",
-      region,
-      character.realm.slug,
-      character.name,
-    ],
+    enabled: typeof character.id === 'number',
+    queryKey: ['character-statistics', region, character.realm.slug, character.name],
     queryFn: () =>
       getCharacterStatistics({
         region,
@@ -61,9 +42,9 @@ const CharacterStatistics = ({
           <>
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-                gap: "16px",
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+                gap: '16px',
               }}
             >
               <div className="flex items-center gap-2">

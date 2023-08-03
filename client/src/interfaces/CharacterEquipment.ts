@@ -1,4 +1,4 @@
-import { Character } from "./ProtectedCharacter";
+import { Character } from './ProtectedCharacter';
 
 export interface CharacterEquipment {
   _links: Links;

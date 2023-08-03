@@ -1,5 +1,5 @@
-import { createContext, useState, useContext } from "react";
-import { EquippedItemsEntity } from "../interfaces/CharacterEquipment";
+import { createContext, useState, useContext } from 'react';
+import { EquippedItemsEntity } from '../interfaces/CharacterEquipment';
 
 interface CharacterContext {
   selectedItemStats: EquippedItemsEntity | null;
@@ -13,17 +13,10 @@ const CharacterContext = createContext<CharacterContext>({
   handleResetItemStats: () => {},
 });
 
-const CharacterContextProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const [selectedItemStats, setSelectedItemStats] =
-    useState<EquippedItemsEntity | null>(null);
+const CharacterContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const [selectedItemStats, setSelectedItemStats] = useState<EquippedItemsEntity | null>(null);
 
-  const handleSelectItemStats = (
-    itemStats: EquippedItemsEntity | undefined
-  ) => {
+  const handleSelectItemStats = (itemStats: EquippedItemsEntity | undefined) => {
     if (!itemStats) return;
     setSelectedItemStats(itemStats);
   };
@@ -32,13 +25,7 @@ const CharacterContextProvider = ({
     setSelectedItemStats(null);
   };
 
-  return (
-    <CharacterContext.Provider
-      value={{ selectedItemStats, handleSelectItemStats, handleResetItemStats }}
-    >
-      {children}
-    </CharacterContext.Provider>
-  );
+  return <CharacterContext.Provider value={{ selectedItemStats, handleSelectItemStats, handleResetItemStats }}>{children}</CharacterContext.Provider>;
 };
 
 export const useCharacter = () => useContext(CharacterContext);

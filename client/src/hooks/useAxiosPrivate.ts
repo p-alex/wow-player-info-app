@@ -1,8 +1,8 @@
-import useRefreshToken from "./useRefreshToken";
-import { useEffect } from "react";
-import { AxiosError } from "axios";
-import { axiosPrivate } from "../api";
-import { useAuth } from "../context/AuthContext";
+import useRefreshToken from './useRefreshToken';
+import { useEffect } from 'react';
+import { AxiosError } from 'axios';
+import { axiosPrivate } from '../api';
+import { useAuth } from '../context/AuthContext';
 
 const useAxiosPrivate = () => {
   const { auth } = useAuth();
@@ -11,12 +11,12 @@ const useAxiosPrivate = () => {
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
-        if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${auth.accessToken}`;
+        if (!config.headers['Authorization']) {
+          config.headers['Authorization'] = `Bearer ${auth.accessToken}`;
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     const responseIntercept = axiosPrivate.interceptors.response.use(
@@ -28,11 +28,11 @@ const useAxiosPrivate = () => {
           // @ts-ignore
           prevRequest.sent = true;
           const accessToken = await refresh();
-          prevRequest!.headers["Authorization"] = `Bearer ${accessToken}`;
+          prevRequest!.headers['Authorization'] = `Bearer ${accessToken}`;
           return axiosPrivate(prevRequest!);
         }
         return Promise.reject(error);
-      }
+      },
     );
 
     return () => {

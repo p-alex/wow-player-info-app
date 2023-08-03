@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 interface WowProfile {
   id: bigint;
@@ -30,12 +30,12 @@ interface Character {
     id: number;
   };
   gender: {
-    type: "MALE" | "FEMALE";
-    name: "male" | "female";
+    type: 'MALE' | 'FEMALE';
+    name: 'male' | 'female';
   };
   faction: {
-    type: "HORDE" | "ALLIANCE";
-    name: "horde" | "alliance";
+    type: 'HORDE' | 'ALLIANCE';
+    name: 'horde' | 'alliance';
   };
   level: number;
 }
@@ -50,9 +50,7 @@ interface Realm {
 }
 
 const getWowProfile = async ({ access_token }: { access_token: string }) => {
-  const { data } = await axios.get<WowProfile>(
-    `https://eu.api.blizzard.com/profile/user/wow?namespace=profile-eu&locale=en_US&access_token=${access_token}`
-  );
+  const { data } = await axios.get<WowProfile>(`https://eu.api.blizzard.com/profile/user/wow?namespace=profile-eu&locale=en_US&access_token=${access_token}`);
   return data;
 };
 

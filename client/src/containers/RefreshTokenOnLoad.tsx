@@ -1,8 +1,8 @@
-import { useEffect, useState, ReactElement } from "react";
-import { axiosPublic } from "../api";
-import Spinner from "../components/Spinner/Spinner";
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState, ReactElement } from 'react';
+import { axiosPublic } from '../api';
+import Spinner from '../components/Spinner/Spinner';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export interface DefaultResponse<Data> {
   success: boolean;
@@ -10,11 +10,7 @@ export interface DefaultResponse<Data> {
   data: Data | null;
 }
 
-const RefreshTokenOnLoad = ({
-  children,
-}: {
-  children: ReactElement<any, any>;
-}) => {
+const RefreshTokenOnLoad = ({ children }: { children: ReactElement<any, any> }) => {
   const navigate = useNavigate();
   const { handleSetAuth, handleResetAuth } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +18,7 @@ const RefreshTokenOnLoad = ({
   const handleRefreshToken = async () => {
     try {
       setIsLoading(true);
-      const { data } = await axiosPublic.get("/oauth/refresh-token", {
+      const { data } = await axiosPublic.get('/oauth/refresh-token', {
         withCredentials: true,
       });
 
@@ -36,7 +32,7 @@ const RefreshTokenOnLoad = ({
     } catch (error) {
       console.error(error);
       handleResetAuth();
-      navigate("/login");
+      navigate('/login');
     } finally {
       setIsLoading(false);
     }

@@ -1,4 +1,4 @@
-import prisma from "../../../db";
+import prisma from '../../../db';
 
 class OAuthDb {
   makeOAuthDbList() {
@@ -15,13 +15,7 @@ class OAuthDb {
     });
   }
 
-  private createUser = async ({
-    battleUserId,
-    battleTag,
-  }: {
-    battleUserId: string;
-    battleTag: string;
-  }) => {
+  private createUser = async ({ battleUserId, battleTag }: { battleUserId: string; battleTag: string }) => {
     const result = await prisma.users.create({
       data: { battleUserId, battleTag },
     });
@@ -35,28 +29,14 @@ class OAuthDb {
     return result;
   };
 
-  private findUserByBattleUserId = async ({
-    battleUserId,
-  }: {
-    battleUserId: string;
-  }) => {
+  private findUserByBattleUserId = async ({ battleUserId }: { battleUserId: string }) => {
     const result = await prisma.users.findUnique({
       where: { battleUserId },
     });
     return result;
   };
 
-  private createSession = async ({
-    user_id,
-    hashedRefreshToken,
-    bn_access_token,
-    expiry_date,
-  }: {
-    user_id: string;
-    hashedRefreshToken: string;
-    bn_access_token: string;
-    expiry_date: number;
-  }) => {
+  private createSession = async ({ user_id, hashedRefreshToken, bn_access_token, expiry_date }: { user_id: string; hashedRefreshToken: string; bn_access_token: string; expiry_date: number }) => {
     const result = await prisma.sessions.create({
       data: {
         user_id,
@@ -69,13 +49,7 @@ class OAuthDb {
     return result;
   };
 
-  private updateSession = async ({
-    oldHashedRefreshToken,
-    newHashedRefreshToken,
-  }: {
-    oldHashedRefreshToken: string;
-    newHashedRefreshToken: string;
-  }) => {
+  private updateSession = async ({ oldHashedRefreshToken, newHashedRefreshToken }: { oldHashedRefreshToken: string; newHashedRefreshToken: string }) => {
     const result = await prisma.sessions.update({
       data: { token: newHashedRefreshToken },
       where: { token: oldHashedRefreshToken },
@@ -84,11 +58,7 @@ class OAuthDb {
     return result;
   };
 
-  private deleteSession = async ({
-    hashedRefreshToken,
-  }: {
-    hashedRefreshToken: string;
-  }) => {
+  private deleteSession = async ({ hashedRefreshToken }: { hashedRefreshToken: string }) => {
     const result = await prisma.sessions.delete({
       where: { token: hashedRefreshToken },
       select: { token: true },
@@ -112,11 +82,7 @@ class OAuthDb {
     return { success: true };
   };
 
-  private findBattleNetAccessToken = async ({
-    user_id,
-  }: {
-    user_id: string;
-  }) => {
+  private findBattleNetAccessToken = async ({ user_id }: { user_id: string }) => {
     const result = await prisma.sessions.findFirst({
       where: {
         user_id,

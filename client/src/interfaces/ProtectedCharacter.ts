@@ -1,4 +1,4 @@
-import { Realm } from "./Summary";
+import { Realm } from './Summary';
 
 export interface ProtectedCharacter {
   _links: Links;

@@ -1,4 +1,4 @@
-import { BiError } from "react-icons/bi";
+import { BiError } from 'react-icons/bi';
 const ErrorMessage = ({ children }: { children: string }) => {
   return (
     <p className="flex items-center gap-2 p-2 bg-red-700 text-white w-max rounded-md">

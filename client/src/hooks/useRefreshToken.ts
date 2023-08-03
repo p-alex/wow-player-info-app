@@ -1,11 +1,11 @@
-import { axiosPublic } from "../api";
-import { useAuth } from "../context/AuthContext";
+import { axiosPublic } from '../api';
+import { useAuth } from '../context/AuthContext';
 
 const useRefreshToken = () => {
   const { handleSetAuth } = useAuth();
 
   const handleRefreshToken = async () => {
-    const { data } = await axiosPublic.get("/oauth/refresh-token", {
+    const { data } = await axiosPublic.get('/oauth/refresh-token', {
       withCredentials: true,
     });
 

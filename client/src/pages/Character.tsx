@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Link, useParams } from "react-router-dom";
-import CharacterDisplay from "../components/CharacterDisplay";
-import { getCharacterSummary } from "../api/requests";
-import { useAuth } from "../context/AuthContext";
-import CharacterContextProvider from "../context/CharacterContext";
-import CharacterStatistics from "../components/CharacterStatistics";
-import { useRegion } from "../context/RegionContext";
-import { AxiosError } from "axios";
-import ErrorMessage from "../components/ErrorMessage";
+import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Link, useParams } from 'react-router-dom';
+import CharacterDisplay from '../components/CharacterDisplay';
+import { getCharacterSummary } from '../api/requests';
+import { useAuth } from '../context/AuthContext';
+import CharacterContextProvider from '../context/CharacterContext';
+import CharacterStatistics from '../components/CharacterStatistics';
+import { useRegion } from '../context/RegionContext';
+import { AxiosError } from 'axios';
+import ErrorMessage from '../components/ErrorMessage';
 
 const Character = () => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const { auth } = useAuth();
   const { region } = useRegion();
 
@@ -21,8 +21,8 @@ const Character = () => {
   };
 
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["character-summary", char_name],
-    enabled: auth.accessToken !== "",
+    queryKey: ['character-summary', char_name],
+    enabled: auth.accessToken !== '',
     queryFn: () =>
       getCharacterSummary({
         region,
@@ -44,8 +44,8 @@ const Character = () => {
     <main className="max-w-[1100px] mx-auto p-4 animate-fadeIn">
       {!auth.accessToken && (
         <p>
-          You must{" "}
-          <Link to={"/login"} className="text-blue-500 underline">
+          You must{' '}
+          <Link to={'/login'} className="text-blue-500 underline">
             Login
           </Link>
           .

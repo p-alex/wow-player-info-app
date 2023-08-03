@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
 
 const cache = (req: Request, res: Response, next: NextFunction) => {
   try {

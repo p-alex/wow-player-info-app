@@ -1,21 +1,21 @@
-import { useState } from "react";
-import { CharacterSummary } from "../interfaces/CharacterSummary";
-import CharacterHeader from "./CharacterHeader";
-import { useQuery } from "@tanstack/react-query";
-import { getCharacterMedia } from "../api/requests";
-import { useAuth } from "../context/AuthContext";
-import CharacterEquipment from "./CharacterEquipment";
-import { useRegion } from "../context/RegionContext";
-import { AxiosError } from "axios";
-import ErrorMessage from "./ErrorMessage";
+import { useState } from 'react';
+import { CharacterSummary } from '../interfaces/CharacterSummary';
+import CharacterHeader from './CharacterHeader';
+import { useQuery } from '@tanstack/react-query';
+import { getCharacterMedia } from '../api/requests';
+import { useAuth } from '../context/AuthContext';
+import CharacterEquipment from './CharacterEquipment';
+import { useRegion } from '../context/RegionContext';
+import { AxiosError } from 'axios';
+import ErrorMessage from './ErrorMessage';
 
 const CharacterDisplay = ({ character }: { character: CharacterSummary }) => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const { auth } = useAuth();
   const { region } = useRegion();
 
   const { isLoading, data } = useQuery({
-    queryKey: ["character-media", character.realm.slug, character.name],
+    queryKey: ['character-media', character.realm.slug, character.name],
     queryFn: () =>
       getCharacterMedia({
         region,
@@ -37,9 +37,9 @@ const CharacterDisplay = ({ character }: { character: CharacterSummary }) => {
     <div
       className="aspect-[4/3] bg-cover bg-center bg-no-repeat mx-auto p-2 rounded-md"
       style={{
-        backgroundImage: `url(${data?.main ? data.main : data?.["main-raw"]})`,
+        backgroundImage: `url(${data?.main ? data.main : data?.['main-raw']})`,
       }}
-      id={"character-display"}
+      id={'character-display'}
     >
       {error && <ErrorMessage>{error}</ErrorMessage>}
       <CharacterHeader character={character} />
