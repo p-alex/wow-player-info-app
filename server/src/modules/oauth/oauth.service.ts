@@ -118,13 +118,13 @@ class OAuthService {
       };
     }
 
-    const newRefreshToken = await this.signJwt({
+    const newRefreshToken = this.signJwt({
       payload: { id: user.id },
       secret: process.env.REFRESH_TOKEN_SECRET!,
       options: { expiresIn: process.env.REFRESH_TOKEN_EXPIRE },
     });
 
-    const newAccessToken = await this.signJwt({
+    const newAccessToken = this.signJwt({
       payload: { id: user.id },
       secret: process.env.ACCESS_TOKEN_SECRET!,
       options: { expiresIn: process.env.ACCESS_TOKEN_EXPIRE },

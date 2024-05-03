@@ -82,7 +82,7 @@ class WowController {
 
       return res.status(200).json({ success: true, errors: [], data });
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error);
       return res.status(500).json({
         success: false,
         errors: [{ message: error.message }],
